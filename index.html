@@ -26,9 +26,22 @@
     :root { --bg: #0f172a; --bg-light: #f8fafc; --fg: #f8fafc; --fg-dark: #0f172a; --accent: #0ea5e9; --accent-dark: #0284c7; --secondary: #8b5cf6; --card: rgba(255, 255, 255, 0.95); }
     html { scroll-behavior: smooth; }
     body { font-family: 'Inter', sans-serif; background: var(--bg-light); color: var(--fg-dark); overflow-x: hidden; }
+    
+    /* Hero Animations */
     .hero-gradient { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); position: relative; overflow: hidden; }
     .hero-gradient::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 20% 50%, rgba(14, 165, 233, 0.15) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%); z-index: 0; }
-    .glass-card { background: var(--card); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1); border-radius: 24px; }
+    
+    /* Floating Elements Animation */
+    .floating { animation: floating 3s ease-in-out infinite; }
+    @keyframes floating { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
+    
+    /* Odometer Animation */
+    .odometer { transition: opacity 0.3s; }
+    
+    /* Glass Card */
+    .glass-card { background: var(--card); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1); border-radius: 24px; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    
+    /* Form Styles */
     .form-input { width: 100%; padding: 0.875rem 1rem; background: rgba(15, 23, 42, 0.04); border: 2px solid rgba(15, 23, 42, 0.1); border-radius: 12px; font-size: 0.95rem; color: var(--fg-dark); transition: all 0.2s; }
     .form-input:focus { outline: none; border-color: var(--accent); background: #fff; box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1); }
     label { display: block; font-weight: 600; font-size: 0.875rem; margin-bottom: 0.5rem; color: #475569; }
@@ -38,24 +51,39 @@
     .btn-secondary:hover { background: rgba(255,255,255,0.1); }
     .btn-ghost { background: transparent; color: var(--fg-dark); border: 2px solid rgba(15, 23, 42, 0.1); padding: 0.75rem 1.5rem; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
     .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
-    .form-step { display: none; animation: fadeIn 0.4s ease; }
+    
+    /* Multi-step Form */
+    .form-step { display: none; animation: fadeSlideIn 0.4s ease; }
     .form-step.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeSlideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
     .progress-step { transition: all 0.3s; }
-    .progress-step.active { background: var(--accent); color: white; }
+    .progress-step.active { background: var(--accent); color: white; transform: scale(1.1); }
     .progress-step.completed { background: #10b981; color: white; }
-    .glimpse-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
-    .glimpse-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+    
+    /* Validation Styles */
+    .form-input.valid { border-color: #10b981; background: rgba(236, 253, 245, 0.5); }
+    .form-input.invalid { border-color: #ef4444; background: rgba(254, 226, 226, 0.2); }
+    .validation-icon { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); opacity: 0; transition: opacity 0.2s; pointer-events: none; }
+    .form-input.valid ~ .check-icon, .form-input.invalid ~ .cross-icon { opacity: 1; }
+    
+    /* Drag and Drop */
+    .drop-zone { border: 2px dashed rgba(15, 23, 42, 0.2); border-radius: 16px; padding: 2rem; text-align: center; cursor: pointer; transition: all 0.3s; background: rgba(241, 245, 249, 0.5); }
+    .drop-zone:hover, .drop-zone.dragover { border-color: var(--accent); background: rgba(14, 165, 233, 0.05); }
+    .drop-zone.has-file { border-style: solid; border-color: #10b981; background: rgba(236, 253, 245, 0.5); }
+    
+    /* Agenda Journey Map */
+    .journey-card { cursor: pointer; transition: all 0.4s ease; position: relative; overflow: hidden; }
+    .journey-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+    .journey-details { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease; opacity: 0; }
+    .journey-card.active .journey-details { max-height: 200px; opacity: 1; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(0,0,0,0.05); }
+    
     .hidden { display: none !important; }
-    .phone-wrapper { display: flex; align-items: stretch; }
+    .phone-wrapper { display: flex; align-items: stretch; position: relative; }
     .phone-prefix { background: rgba(15, 23, 42, 0.08); border: 2px solid rgba(15, 23, 42, 0.1); border-right: none; border-radius: 12px 0 0 12px; padding: 0.875rem 1rem; display: flex; align-items: center; font-weight: 600; color: #64748b; user-select: none; }
-    .phone-wrapper input { border-radius: 0 12px 12px 0; border-left: none; }
-    .form-input.error { border-color: #ef4444 !important; background-color: rgba(254, 226, 226, 0.2) !important; }
-    .phone-prefix.error { border-color: #ef4444 !important; background-color: rgba(254, 226, 226, 0.4) !important; }
-    .error-msg { color: #dc2626; font-size: 0.8rem; margin-top: 0.25rem; display: none; font-weight: 500; }
-
+    .phone-wrapper input { border-radius: 0 12px 12px 0; border-left: none; width: 100%; }
+    
     /* Loading Overlay */
-    #loading-overlay { position: fixed; inset: 0; background: rgba(255,255,255,0.9); z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    #loading-overlay { position: fixed; inset: 0; background: rgba(255,255,255,0.95); z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; }
   </style>
 </head>
 <body>
@@ -75,33 +103,52 @@
       </a>
       <div class="flex items-center gap-2 sm:gap-4">
         <a href="#about" class="text-sm font-medium text-slate-600 hover:text-sky-600 hidden sm:block">About</a>
-        <a href="#agenda" class="text-sm font-medium text-slate-600 hover:text-sky-600 hidden sm:block">Agenda</a>
-        <a href="#glimpse" class="text-sm font-medium text-slate-600 hover:text-sky-600 hidden sm:block">Past Events</a>
+        <a href="#journey" class="text-sm font-medium text-slate-600 hover:text-sky-600 hidden sm:block">Agenda</a>
         <a href="#register" class="btn-primary py-2 px-4 text-sm">Register Now</a>
       </div>
     </div>
   </nav>
 
   <!-- Hero Section -->
-  <header id="top" class="hero-gradient text-white pt-32 pb-20 px-4 relative">
+  <header id="top" class="hero-gradient text-white pt-32 pb-24 px-4 relative">
+    <div class="absolute top-1/4 left-10 w-20 h-20 border border-white/10 rounded-full floating"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-32 h-32 border border-white/10 rounded-full floating" style="animation-delay: 1s;"></div>
+    <div class="absolute top-1/2 right-10 w-16 h-16 bg-sky-500/20 rounded-full blur-xl floating"></div>
+    
     <div class="max-w-5xl mx-auto text-center relative z-10">
       <span class="inline-block px-4 py-1 bg-white/10 border border-white/20 rounded-full text-xs font-bold uppercase tracking-widest mb-6 backdrop-blur-sm">One-Day Symposium</span>
       <h1 class="font-display text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight">Pharmacy in Health Policy<br/><span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-emerald-400">Symposium</span></h1>
-      <p class="text-lg sm:text-xl text-slate-300 max-w-3xl mx-auto mb-8 leading-relaxed">Empowering Future Leaders for Evidence-Based Change. Bridging the gap between academic pharmacy education and real-world policy impact.</p>
+      <p class="text-lg sm:text-xl text-slate-300 max-w-3xl mx-auto mb-8 leading-relaxed">Empowering Future Leaders for Evidence-Based Change.</p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="#register" class="btn-primary text-lg px-8 py-4 bg-white text-slate-900 hover:bg-slate-100" style="background: white; color: #0f172a;">Register Now</a>
-        <a href="#about" class="btn-secondary">Learn More</a>
+        <a href="#register" class="btn-primary text-lg px-8 py-4" style="background: white; color: #0f172a;">Register Now</a>
+        <a href="#journey" class="btn-secondary">View Agenda</a>
       </div>
     </div>
   </header>
 
-  <!-- Stats Section -->
-  <section class="py-12 bg-white border-b border-slate-100">
-    <div class="max-w-5xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-      <div><div class="text-3xl font-bold text-sky-600">2000+</div><div class="text-sm text-slate-500">Students Reached</div></div>
-      <div><div class="text-3xl font-bold text-sky-600">80+</div><div class="text-sm text-slate-500">Youth Trained</div></div>
-      <div><div class="text-3xl font-bold text-sky-600">4</div><div class="text-sm text-slate-500">Key Sessions</div></div>
-      <div><div class="text-3xl font-bold text-sky-600">1</div><div class="text-sm text-slate-500">Day Event</div></div>
+  <!-- Animated Stats Section -->
+  <section class="py-16 bg-white border-b border-slate-100 relative z-10 -mt-12">
+    <div class="max-w-4xl mx-auto px-4">
+      <div class="glass-card p-8 grid grid-cols-1 md:grid-cols-3 gap-8 text-center shadow-2xl">
+        <div>
+          <div class="text-4xl sm:text-5xl font-bold text-sky-600 font-display">
+            <span class="odometer" data-target="2000">0</span>+
+          </div>
+          <div class="text-sm text-slate-500 mt-2 font-medium uppercase tracking-wide">Students Reached</div>
+        </div>
+        <div class="border-t md:border-t-0 md:border-l md:border-r border-slate-100 md:px-4">
+          <div class="text-4xl sm:text-5xl font-bold text-sky-600 font-display">
+            <span class="odometer" data-target="80">0</span>+
+          </div>
+          <div class="text-sm text-slate-500 mt-2 font-medium uppercase tracking-wide">Youth Trained</div>
+        </div>
+        <div>
+          <div class="text-4xl sm:text-5xl font-bold text-sky-600 font-display">
+            <span class="odometer" data-target="4">0</span>
+          </div>
+          <div class="text-sm text-slate-500 mt-2 font-medium uppercase tracking-wide">Key Sessions</div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -136,68 +183,95 @@
     </div>
   </section>
 
-  <!-- Agenda Section -->
-  <section id="agenda" class="py-20 px-4 bg-slate-50">
-    <div class="max-w-4xl mx-auto">
+  <!-- Interactive Journey Map Agenda -->
+  <section id="journey" class="py-20 px-4 bg-slate-50">
+    <div class="max-w-5xl mx-auto">
       <div class="text-center mb-12">
         <span class="text-sky-600 font-bold text-sm uppercase tracking-widest">Program</span>
-        <h2 class="font-display text-3xl font-bold mt-2">Interactive Program Agenda</h2>
+        <h2 class="font-display text-3xl font-bold mt-2">Your Learning Journey</h2>
+        <p class="text-slate-500 text-sm mt-2">Click each stage to explore the details</p>
       </div>
-      <div class="space-y-8 relative">
-        <div class="flex gap-6">
-          <div class="w-16 h-16 rounded-2xl bg-sky-600 text-white flex items-center justify-center font-bold text-xl flex-shrink-0">I</div>
-          <div class="glass-card p-6 flex-1"><span class="text-xs font-bold text-sky-600 uppercase">Foundations</span><h3 class="font-display font-bold text-lg mt-1">Health Policy 101</h3><p class="text-slate-500 text-sm mt-2">Introduction to evidence-based policymaking in Nepal.</p></div>
+      
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="journey-card glass-card p-6 border-l-4 border-sky-500" onclick="toggleJourney(this)">
+          <div class="flex justify-between items-start">
+            <div>
+              <span class="text-xs font-bold text-sky-600 uppercase">Stage I</span>
+              <h3 class="font-display font-bold text-xl mt-1">Foundations</h3>
+              <p class="text-slate-500 text-sm mt-1">Health Policy 101</p>
+            </div>
+            <div class="w-10 h-10 rounded-full bg-sky-100 flex items-center justify-center text-sky-600 flex-shrink-0 journey-icon transition-transform duration-300">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </div>
+          </div>
+          <div class="journey-details text-slate-600 text-sm">
+            <p>Introduction to evidence-based policymaking in Nepal.</p>
+            <ul class="mt-2 space-y-1 text-slate-500">
+              <li>• Federalism & Health</li>
+              <li>• Policy Lifecycle</li>
+            </ul>
+          </div>
         </div>
-        <div class="flex gap-6">
-          <div class="w-16 h-16 rounded-2xl bg-emerald-600 text-white flex items-center justify-center font-bold text-xl flex-shrink-0">II</div>
-          <div class="glass-card p-6 flex-1"><span class="text-xs font-bold text-emerald-600 uppercase">Advocacy</span><h3 class="font-display font-bold text-lg mt-1">The Pharmacist’s Voice</h3><p class="text-slate-500 text-sm mt-2">Strategies for public health advocacy and medication safety.</p></div>
-        </div>
-        <div class="flex gap-6">
-          <div class="w-16 h-16 rounded-2xl bg-purple-600 text-white flex items-center justify-center font-bold text-xl flex-shrink-0">III</div>
-          <div class="glass-card p-6 flex-1"><span class="text-xs font-bold text-purple-600 uppercase">Workshop</span><h3 class="font-display font-bold text-lg mt-1">Research & Data</h3><p class="text-slate-500 text-sm mt-2">Training on survey tools and quality assurance for public programs.</p></div>
-        </div>
-        <div class="flex gap-6">
-          <div class="w-16 h-16 rounded-2xl bg-rose-600 text-white flex items-center justify-center font-bold text-xl flex-shrink-0">IV</div>
-          <div class="glass-card p-6 flex-1"><span class="text-xs font-bold text-rose-600 uppercase">Dialogue</span><h3 class="font-display font-bold text-lg mt-1">Interactive Q&A</h3><p class="text-slate-500 text-sm mt-2">Open discussions and real-life case studies on health communication.</p></div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- Glimpse Section -->
-  <section id="glimpse" class="py-20 px-4">
-    <div class="max-w-6xl mx-auto">
-      <div class="text-center mb-12">
-        <span class="text-emerald-600 font-bold text-sm uppercase tracking-widest">Looking Back</span>
-        <h2 class="font-display text-3xl font-bold mt-2">ARMS Symposium Highlights</h2>
-        <p class="text-slate-500 mt-2 max-w-2xl mx-auto">A glimpse into our previous event on Antibiotic Resistance and Medication Safety held at Sunway College, Maitidevi, Kathmandu.</p>
-      </div>
-      <div class="grid md:grid-cols-2 gap-8 mb-12">
-        <div class="space-y-6">
-          <div class="glimpse-card glass-card p-6 flex gap-4 items-start">
-            <div class="w-12 h-12 rounded-full bg-sky-100 flex items-center justify-center flex-shrink-0"><svg class="w-6 h-6 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg></div>
-            <div><h3 class="font-bold text-slate-800 mb-1">Diverse Audience</h3><p class="text-sm text-slate-500">Brought together medical professionals, pharmacists, researchers, policymakers, and passionate students.</p></div>
+        <div class="journey-card glass-card p-6 border-l-4 border-emerald-500" onclick="toggleJourney(this)">
+          <div class="flex justify-between items-start">
+            <div>
+              <span class="text-xs font-bold text-emerald-600 uppercase">Stage II</span>
+              <h3 class="font-display font-bold text-xl mt-1">Advocacy</h3>
+              <p class="text-slate-500 text-sm mt-1">The Pharmacist’s Voice</p>
+            </div>
+            <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 flex-shrink-0 journey-icon transition-transform duration-300">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </div>
           </div>
-          <div class="glimpse-card glass-card p-6 flex gap-4 items-start">
-            <div class="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0"><svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg></div>
-            <div><h3 class="font-bold text-slate-800 mb-1">Innovative Solutions</h3><p class="text-sm text-slate-500">Esteemed speakers discussed innovative approaches to combat antimicrobial resistance.</p></div>
+          <div class="journey-details text-slate-600 text-sm">
+            <p>Strategies for public health advocacy.</p>
+            <ul class="mt-2 space-y-1 text-slate-500">
+              <li>• Antibiotic Resistance (AMR)</li>
+              <li>• Communication Skills</li>
+            </ul>
           </div>
         </div>
-        <div class="space-y-6">
-           <div class="rounded-2xl overflow-hidden shadow-lg border border-slate-200 bg-slate-200 h-64 flex items-center justify-center relative">
-              <img src="https://raw.githubusercontent.com/cprec-nepal/logo/main/ARMS.jpg" alt="Symposium Highlight" class="w-full h-full object-cover">
-              <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-slate-900 to-transparent p-4"><p class="text-white text-xs font-medium">Sunway College, Maitidevi, Kathmandu</p></div>
-           </div>
-           <div class="bg-emerald-50 border-l-4 border-emerald-500 p-6 rounded-r-xl">
-             <h4 class="font-bold text-emerald-800 mb-2">Key Outcome</h4><p class="text-sm text-emerald-700">The event culminated with a closing address highlighting the collective commitment to continuing the fight against antimicrobial resistance beyond the symposium.</p>
-           </div>
+
+        <div class="journey-card glass-card p-6 border-l-4 border-purple-500" onclick="toggleJourney(this)">
+          <div class="flex justify-between items-start">
+            <div>
+              <span class="text-xs font-bold text-purple-600 uppercase">Stage III</span>
+              <h3 class="font-display font-bold text-xl mt-1">Workshop</h3>
+              <p class="text-slate-500 text-sm mt-1">Research & Data</p>
+            </div>
+            <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 flex-shrink-0 journey-icon transition-transform duration-300">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </div>
+          </div>
+          <div class="journey-details text-slate-600 text-sm">
+            <p>Hands-on training on survey tools.</p>
+            <ul class="mt-2 space-y-1 text-slate-500">
+              <li>• Survey Design Tools</li>
+              <li>• Data Analysis Basics</li>
+            </ul>
+          </div>
         </div>
-      </div>
-      <div class="max-w-3xl mx-auto bg-slate-900 text-white rounded-2xl p-8 relative overflow-hidden">
-         <div class="absolute top-0 left-0 w-20 h-20 bg-sky-500 opacity-20 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
-         <svg class="w-10 h-10 text-sky-400 opacity-50 mb-4" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
-         <p class="text-lg font-medium text-slate-200 mb-6">"The symposium was an eye-opener, highlighting the urgency and need for concerted efforts in combating antibiotic resistance. It was inspiring to see such dedication from healthcare professionals and students alike."</p>
-         <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-sky-500 flex items-center justify-center font-bold">A</div><div><p class="font-bold text-white">Participant Testimonial</p><p class="text-sm text-slate-400">ARMS Symposium Attendee</p></div></div>
+
+        <div class="journey-card glass-card p-6 border-l-4 border-rose-500" onclick="toggleJourney(this)">
+          <div class="flex justify-between items-start">
+            <div>
+              <span class="text-xs font-bold text-rose-600 uppercase">Stage IV</span>
+              <h3 class="font-display font-bold text-xl mt-1">Dialogue</h3>
+              <p class="text-slate-500 text-sm mt-1">Interactive Q&A</p>
+            </div>
+            <div class="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center text-rose-600 flex-shrink-0 journey-icon transition-transform duration-300">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </div>
+          </div>
+          <div class="journey-details text-slate-600 text-sm">
+            <p>Open discussions with experts.</p>
+            <ul class="mt-2 space-y-1 text-slate-500">
+              <li>• Expert Panels</li>
+              <li>• Case Study Analysis</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -207,51 +281,62 @@
     <div class="max-w-3xl mx-auto">
       <div class="text-center mb-8">
         <h2 class="font-display text-3xl font-bold">Registration Form</h2>
-        <p class="text-slate-500 mt-2">Fill in the details below to secure your spot.</p>
+        <p class="text-slate-500 mt-2">Complete the 4-step wizard to secure your spot.</p>
       </div>
 
-      <div class="glass-card p-8 sm:p-10">
+      <div class="glass-card p-8 sm:p-10 relative">
+        <!-- Progress Steps -->
         <div class="flex justify-between mb-10 relative">
           <div class="absolute top-4 left-0 right-0 h-1 bg-slate-200 -z-1"></div>
           <div class="absolute top-4 left-0 h-1 bg-sky-600 -z-1 transition-all duration-500" style="width: 0%" id="progress-line"></div>
           
-          <div class="step-indicator flex flex-col items-center z-10" data-step="1"><div class="w-8 h-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-sm progress-step active">1</div><span class="text-xs mt-2 text-slate-600 hidden sm:block">Personal</span></div>
-          <div class="step-indicator flex flex-col items-center z-10" data-step="2"><div class="w-8 h-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-sm progress-step">2</div><span class="text-xs mt-2 text-slate-600 hidden sm:block">Academic</span></div>
-          <div class="step-indicator flex flex-col items-center z-10" data-step="3"><div class="w-8 h-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-sm progress-step">3</div><span class="text-xs mt-2 text-slate-600 hidden sm:block">Emergency</span></div>
-          <div class="step-indicator flex flex-col items-center z-10" data-step="4"><div class="w-8 h-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-sm progress-step">4</div><span class="text-xs mt-2 text-slate-600 hidden sm:block">Payment</span></div>
+          <div class="step-indicator flex flex-col items-center z-10" data-step="1">
+            <div class="w-10 h-10 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-sm progress-step active">1</div>
+            <span class="text-xs mt-2 text-slate-600 hidden sm:block">Personal</span>
+          </div>
+          <div class="step-indicator flex flex-col items-center z-10" data-step="2">
+            <div class="w-10 h-10 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-sm progress-step">2</div>
+            <span class="text-xs mt-2 text-slate-600 hidden sm:block">Academic</span>
+          </div>
+          <div class="step-indicator flex flex-col items-center z-10" data-step="3">
+            <div class="w-10 h-10 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-sm progress-step">3</div>
+            <span class="text-xs mt-2 text-slate-600 hidden sm:block">Emergency</span>
+          </div>
+          <div class="step-indicator flex flex-col items-center z-10" data-step="4">
+            <div class="w-10 h-10 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-sm progress-step">4</div>
+            <span class="text-xs mt-2 text-slate-600 hidden sm:block">Payment</span>
+          </div>
         </div>
 
         <form id="registrationForm" onsubmit="return false;">
           
-          <!-- STEP 1: Personal Details -->
+          <!-- STEP 1 -->
           <div class="form-step active" id="step-1">
             <h3 class="font-display text-xl font-bold mb-6">Personal Details</h3>
-            <div class="space-y-4">
+            <div class="space-y-5">
               <div><label>Full Name *</label><input type="text" name="fullName" class="form-input" placeholder="Your full name" required /></div>
               <div>
                 <label>Contact Number *</label>
                 <div class="phone-wrapper">
-                  <div class="phone-prefix" id="phone-prefix-1">+977</div>
-                  <input type="tel" name="phone" class="form-input" placeholder="98XXXXXXXX" required maxlength="10" />
+                  <div class="phone-prefix">+977</div>
+                  <input type="tel" name="phone" id="phone-input" class="form-input relative" placeholder="98XXXXXXXX" required maxlength="10" />
+                  <svg class="check-icon validation-icon w-5 h-5 text-emerald-500 absolute right-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                  <svg class="cross-icon validation-icon w-5 h-5 text-red-500 absolute right-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>
                 </div>
-                <p class="error-msg" id="phone-error">Must be 10 digits starting with 9.</p>
+                <p class="text-xs text-slate-400 mt-1" id="phone-status">Must start with 9 and be 10 digits.</p>
               </div>
               <div><label>Email Address *</label><input type="email" name="email" class="form-input" placeholder="you@example.com" required /></div>
               <div class="grid grid-cols-2 gap-4">
-                <div>
-                  <label>Date of Birth *</label>
-                  <input type="date" name="dob" class="form-input" required />
-                  <p class="error-msg" id="dob-error">Date must be in the past.</p>
-                </div>
+                <div><label>Date of Birth *</label><input type="date" name="dob" class="form-input" required /></div>
                 <div><label>Gender *</label><select name="gender" class="form-input" required><option value="">Select</option><option value="Male">Male</option><option value="Female">Female</option><option value="Other">Other</option></select></div>
               </div>
             </div>
           </div>
 
-          <!-- STEP 2: Academic Details -->
+          <!-- STEP 2 -->
           <div class="form-step" id="step-2">
             <h3 class="font-display text-xl font-bold mb-6">Academic Details</h3>
-            <div class="space-y-4">
+            <div class="space-y-5">
               <div class="grid grid-cols-2 gap-4">
                 <div><label>University *</label><input type="text" name="university" class="form-input" placeholder="Purbanchal University" required /></div>
                 <div><label>College Name *</label><input type="text" name="college" class="form-input" placeholder="Your college" required /></div>
@@ -264,69 +349,62 @@
             </div>
           </div>
 
-          <!-- STEP 3: Emergency Contact -->
+          <!-- STEP 3 -->
           <div class="form-step" id="step-3">
             <h3 class="font-display text-xl font-bold mb-6">Emergency Contact</h3>
-            <div class="space-y-4">
+            <div class="space-y-5">
               <div><label>Emergency Contact Name *</label><input type="text" name="emergencyName" class="form-input" required /></div>
               <div>
                 <label>Emergency Contact No. *</label>
                 <div class="phone-wrapper">
-                  <div class="phone-prefix" id="phone-prefix-2">+977</div>
+                  <div class="phone-prefix">+977</div>
                   <input type="tel" name="emergencyPhone" class="form-input" placeholder="98XXXXXXXX" required maxlength="10" />
                 </div>
-                <p class="error-msg" id="emergency-phone-error">Must be 10 digits starting with 9.</p>
               </div>
               <div><label>Relation *</label><select name="emergencyRelation" class="form-input" required><option value="">Select Relation</option><option value="Father">Father</option><option value="Mother">Mother</option><option value="Brother">Brother</option><option value="Sister">Sister</option><option value="Friend">Friend</option></select></div>
             </div>
           </div>
 
-          <!-- STEP 4: Payment Details -->
+          <!-- STEP 4 -->
           <div class="form-step" id="step-4">
             <h3 class="font-display text-xl font-bold mb-6">Payment Details</h3>
-            <div class="bg-slate-50 rounded-xl p-5 mb-6 text-sm border border-slate-200">
-              <div class="flex flex-col md:flex-row gap-6">
-                 <div class="flex-1">
-                    <h4 class="font-bold text-slate-800 mb-2">Payment Methods:</h4>
-                    <p class="text-slate-600 mb-2"><strong>E-sewa / Khalti:</strong> 9803369377<br/><span class="text-xs">(A/c: Manish Thapaliya)</span></p>
-                    <p class="text-slate-600"><strong>Bank:</strong> Nabil Bank<br/>A/c: 09810017526638</p>
+            
+            <div class="bg-slate-50 rounded-xl p-4 mb-6 text-sm border border-slate-200">
+              <div class="flex flex-col md:flex-row gap-4 items-center">
+                 <div class="flex-1 text-sm text-slate-600">
+                    <strong>Scan to Pay:</strong> Esewa / Khalti<br/>
+                    <span class="text-xs text-slate-400">A/c: Manish Thapaliya (9803369377)</span>
                  </div>
-                 
-                 <!-- Updated QR Code Section: All 3 QRs -->
-                 <div class="flex-shrink-0 text-center w-full md:w-auto">
-                    <div class="grid grid-cols-3 gap-2 justify-items-center">
-                       <!-- Previous QR -->
-                       <div>
-                          <img src="https://raw.githubusercontent.com/cprec-nepal/logo/main/QR.jpeg" alt="Bank QR" class="w-20 h-20 sm:w-24 sm:h-24 object-contain rounded-lg mx-auto border shadow-sm bg-white p-1">
-                          <p class="text-xs text-slate-600 mt-1 font-semibold">Bank</p>
-                       </div>
-                       <!-- Esewa QR -->
-                       <div>
-                          <img src="https://raw.githubusercontent.com/cprec-nepal/logo/main/Esewa.jpeg" alt="Esewa QR" class="w-20 h-20 sm:w-24 sm:h-24 object-contain rounded-lg mx-auto border shadow-sm bg-white p-1">
-                          <p class="text-xs text-slate-600 mt-1 font-semibold">Esewa</p>
-                       </div>
-                       <!-- Khalti QR -->
-                       <div>
-                          <img src="https://raw.githubusercontent.com/cprec-nepal/logo/main/Khalti.jpeg" alt="Khalti QR" class="w-20 h-20 sm:w-24 sm:h-24 object-contain rounded-lg mx-auto border shadow-sm bg-white p-1">
-                          <p class="text-xs text-slate-600 mt-1 font-semibold">Khalti</p>
-                       </div>
-                    </div>
+                 <div class="grid grid-cols-3 gap-2">
+                    <img src="https://raw.githubusercontent.com/cprec-nepal/logo/main/QR.jpeg" alt="Bank" class="w-16 h-16 rounded border shadow-sm bg-white">
+                    <img src="https://raw.githubusercontent.com/cprec-nepal/logo/main/Esewa.jpeg" alt="Esewa" class="w-16 h-16 rounded border shadow-sm bg-white">
+                    <img src="https://raw.githubusercontent.com/cprec-nepal/logo/main/Khalti.jpeg" alt="Khalti" class="w-16 h-16 rounded border shadow-sm bg-white">
                  </div>
-                 
               </div>
-              <p class="text-xs text-rose-600 mt-4 font-medium">* Amount paid is non-refundable.</p>
             </div>
-            <div class="space-y-4">
+
+            <div class="space-y-5">
               <div class="grid grid-cols-2 gap-4">
                 <div><label>Reference Code *</label><input type="text" name="refCode" class="form-input" placeholder="Transaction ID" required /></div>
                 <div><label>Payment Method *</label><select name="paymentMethod" class="form-input" required><option value="">Select</option><option value="Esewa">Esewa</option><option value="Khalti">Khalti</option><option value="Bank">Nabil Bank</option></select></div>
               </div>
+
               <div>
-                 <label>Send Voucher To *</label>
-                 <div class="flex gap-4 mt-2">
-                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="voucherPlatform" value="Whatsapp" class="accent-sky-600" required checked> Whatsapp</label>
-                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="voucherPlatform" value="Viber" class="accent-sky-600"> Viber</label>
-                 </div>
+                <label>Upload Payment Voucher *</label>
+                <div id="dropZone" class="drop-zone">
+                  <input type="file" id="fileInput" class="hidden" accept="image/*" />
+                  <div id="dropContent">
+                    <svg class="w-10 h-10 text-slate-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    <p class="text-sm font-medium text-slate-600">Drag & drop image here</p>
+                    <p class="text-xs text-slate-400">or click to browse</p>
+                  </div>
+                  <div id="filePreview" class="hidden">
+                    <div class="flex items-center justify-center gap-2 text-emerald-600">
+                      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                      <span class="text-sm font-medium" id="fileName">file.jpg</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -340,68 +418,121 @@
     </div>
   </section>
 
-  <!-- Upload Modal -->
-  <div id="uploadModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="glass-card p-8 max-w-md w-full text-center">
-      <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 mx-auto mb-4">
-        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-      </div>
-      <h3 class="font-display text-xl font-bold text-slate-800 mb-2">Registration Submitted!</h3>
-      <p class="text-slate-500 text-sm mb-6">Please upload your payment voucher to confirm.</p>
-      
-      <div class="bg-slate-50 rounded-xl p-6 border-2 border-dashed border-slate-200 cursor-pointer hover:border-sky-400 transition-colors" onclick="document.getElementById('fileInput').click()">
-        <svg class="w-10 h-10 text-slate-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-        <p class="text-sm font-medium text-slate-600" id="fileStatus">Click to Upload Voucher</p>
-        <input type="file" id="fileInput" class="hidden" accept="image/*" />
-      </div>
-      
-      <button id="uploadBtn" class="btn-primary w-full mt-6 opacity-50" disabled>Upload & Finish</button>
-      <p class="text-xs text-slate-400 mt-4">Or close if already sent via chat.</p>
-    </div>
-  </div>
-
   <!-- Footer -->
   <footer class="bg-slate-900 text-white py-16 px-4">
     <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12">
       <div>
         <div class="flex items-center gap-3 mb-4"><img src="https://raw.githubusercontent.com/cprec-nepal/logo/main/CPREC%20Nepal.png" alt="Logo" class="h-10 w-auto brightness-200"></div>
         <p class="text-slate-400 text-sm leading-relaxed mb-6">A youth-led organization with a proven track record of impact in health policy.</p>
-        <div class="text-slate-400 text-sm">
-          <p><strong class="text-white">Contact:</strong> Manish Thapaliya</p>
-          <p><strong class="text-white">Email:</strong> info@cprecnepal.org.np</p>
-          <p><strong class="text-white">Mobile:</strong> +977-9803369377</p>
-        </div>
-      </div>
-      <div class="text-right">
-        <h4 class="font-bold text-lg mb-4">Quick Links</h4>
-        <div class="flex flex-col gap-2 items-end">
-          <a href="#about" class="text-slate-400 hover:text-white text-sm">About</a>
-          <a href="#agenda" class="text-slate-400 hover:text-white text-sm">Agenda</a>
-          <a href="#register" class="text-slate-400 hover:text-white text-sm">Register</a>
-        </div>
       </div>
     </div>
   </footer>
 
   <script>
     // ==================================================
-    // IMPORTANT: PASTE YOUR WEB APP URL BELOW
-    // Must end in /exec
+    // CONFIGURATION
     // ==================================================
     const API_URL = "https://script.google.com/macros/s/AKfycbwS6Pbdz0b47vtSow-dUWOnFsIujhq-6Ikk1_5KgcjdU2UFcwRXWBfNS1ztZmnYF4BXuQ/exec";
-    // ==================================================
 
-    // UI Elements
     const loader = document.getElementById('loading-overlay');
     const loaderText = document.getElementById('loading-text');
-    
     let currentStep = 0;
     const steps = document.querySelectorAll('.form-step');
     const progressSteps = document.querySelectorAll('.progress-step');
     const progressLine = document.getElementById('progress-line');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
+    let selectedFile = null;
 
+    // ==================================================
+    // 1. ODIMETER ANIMATION
+    // ==================================================
+    const odometerCallback = (entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const counters = entry.target.querySelectorAll('.odometer');
+          counters.forEach(counter => {
+            const target = +counter.getAttribute('data-target');
+            const duration = 2000;
+            const step = target / (duration / 16);
+            let current = 0;
+            const updateCounter = () => {
+              current += step;
+              if (current < target) {
+                counter.innerText = Math.ceil(current);
+                requestAnimationFrame(updateCounter);
+              } else {
+                counter.innerText = target;
+              }
+            };
+            updateCounter();
+          });
+          observer.unobserve(entry.target);
+        }
+      });
+    };
+    const odometerObserver = new IntersectionObserver(odometerCallback, { threshold: 0.5 });
+    const statsSection = document.querySelector('.glass-card');
+    if (statsSection) odometerObserver.observe(statsSection);
+
+    // ==================================================
+    // 2. JOURNEY MAP & VALIDATION & DRAG/DROP
+    // ==================================================
+    function toggleJourney(card) {
+      const isActive = card.classList.contains('active');
+      document.querySelectorAll('.journey-card').forEach(c => {
+        c.classList.remove('active');
+        c.querySelector('.journey-icon').style.transform = 'rotate(0deg)';
+      });
+      if (!isActive) {
+        card.classList.add('active');
+        card.querySelector('.journey-icon').style.transform = 'rotate(180deg)';
+      }
+    }
+
+    const phoneInput = document.getElementById('phone-input');
+    const phoneStatus = document.getElementById('phone-status');
+    phoneInput.addEventListener('input', function(e) {
+      const value = e.target.value;
+      e.target.value = value.replace(/\D/g, '').substring(0, 10);
+      if (e.target.value.length > 0) {
+        if (e.target.value.length === 10 && e.target.value.startsWith('9')) {
+          e.target.classList.remove('invalid'); e.target.classList.add('valid');
+          phoneStatus.textContent = "Valid number"; phoneStatus.className = "text-xs text-emerald-600 mt-1 font-medium";
+        } else {
+          e.target.classList.remove('valid'); e.target.classList.add('invalid');
+          phoneStatus.textContent = "Invalid format"; phoneStatus.className = "text-xs text-red-500 mt-1 font-medium";
+        }
+      } else {
+        e.target.classList.remove('valid', 'invalid');
+        phoneStatus.textContent = "Must start with 9 and be 10 digits."; phoneStatus.className = "text-xs text-slate-400 mt-1";
+      }
+    });
+
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const dropContent = document.getElementById('dropContent');
+    const filePreview = document.getElementById('filePreview');
+    const fileName = document.getElementById('fileName');
+
+    dropZone.addEventListener('click', () => fileInput.click());
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', (e) => { e.preventDefault(); dropZone.classList.remove('dragover'); if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]); });
+    fileInput.addEventListener('change', (e) => { if (e.target.files.length) handleFile(e.target.files[0]); });
+
+    function handleFile(file) {
+      if (!file.type.startsWith('image/')) { alert('Please upload an image file.'); return; }
+      selectedFile = file;
+      fileName.textContent = file.name;
+      dropContent.classList.add('hidden');
+      filePreview.classList.remove('hidden');
+      dropZone.classList.add('has-file');
+    }
+
+    // ==================================================
+    // 3. FORM NAVIGATION
+    // ==================================================
     function updateProgressBar() {
       const percent = (currentStep / (steps.length - 1)) * 100;
       progressLine.style.width = percent + '%';
@@ -415,46 +546,18 @@
     function validateStep(stepIndex) {
       const container = steps[stepIndex];
       let valid = true;
-      container.querySelectorAll('.form-input').forEach(input => input.classList.remove('error'));
-      container.querySelectorAll('.phone-prefix').forEach(prefix => prefix.classList.remove('error'));
-      container.querySelectorAll('.error-msg').forEach(msg => msg.style.display = 'none');
       const inputs = container.querySelectorAll('input[required], select[required]');
       inputs.forEach(input => {
-        if (!input.value.trim()) {
-          input.classList.add('error');
-          if(input.name === 'phone' || input.name === 'emergencyPhone') {
-             const wrapper = input.closest('.phone-wrapper');
-             if(wrapper) wrapper.querySelector('.phone-prefix').classList.add('error');
-          }
-          valid = false;
-        }
+        if (!input.value.trim()) { input.classList.add('invalid'); valid = false; } 
+        else { input.classList.remove('invalid'); }
       });
-      if (stepIndex === 0 || stepIndex === 2) {
-        const phoneInput = container.querySelector('input[name="phone"], input[name="emergencyPhone"]');
-        if (phoneInput && phoneInput.value) {
-          const digits = phoneInput.value.replace(/\D/g, '');
-          const errId = stepIndex === 0 ? 'phone-error' : 'emergency-phone-error';
-          const errEl = document.getElementById(errId);
-          const prefix = phoneInput.closest('.phone-wrapper').querySelector('.phone-prefix');
-          if (digits.length !== 10 || digits.charAt(0) !== '9') {
-            phoneInput.classList.add('error'); prefix.classList.add('error');
-            if(errEl) { errEl.style.display = 'block'; }
-            valid = false;
-          } else { phoneInput.value = digits; }
-        }
+      if (stepIndex === 0 && !phoneInput.classList.contains('valid')) valid = false;
+      if (stepIndex === 3 && !selectedFile) {
+        dropZone.classList.add('invalid');
+        alert("Please upload your payment voucher.");
+        valid = false;
       }
-      if (stepIndex === 0) {
-        const dobInput = container.querySelector('input[name="dob"]');
-        if (dobInput && dobInput.value) {
-          const dob = new Date(dobInput.value);
-          const today = new Date(); today.setHours(0,0,0,0);
-          const errEl = document.getElementById('dob-error');
-          if (isNaN(dob.getTime()) || dob >= today) {
-             dobInput.classList.add('error'); if(errEl) { errEl.style.display = 'block'; } valid = false;
-          }
-        }
-      }
-      if (!valid) alert("Please correct the highlighted fields.");
+      if (!valid && stepIndex !== 3) alert("Please fill all required fields correctly.");
       return valid;
     }
 
@@ -469,125 +572,86 @@
       nextBtn.textContent = currentStep === steps.length - 1 ? "Submit Registration" : "Next Step";
     }
 
-    // ==========================================
-    // NO-CORS MODE SUBMISSION (ROBUST)
-    // ==========================================
-    function submitForm() {
+    // ==================================================
+    // 4. OPTIMIZED SUBMISSION (Single Request)
+    // ==================================================
+    async function submitForm() {
       const form = document.getElementById('registrationForm');
       const formData = new FormData(form);
       const data = {};
       formData.forEach((value, key) => data[key] = value);
-      
       data.phone = "+977" + data.phone;
-      data.emergencyPhone = "+977" + data.emergencyPhone;
 
       nextBtn.disabled = true;
-      nextBtn.textContent = "Connecting...";
+      nextBtn.textContent = "Processing...";
+      loader.classList.remove('hidden');
+      loaderText.textContent = "Preparing Data...";
 
-      if(API_URL.includes("PASTE_YOUR_WEB_APP_URL_HERE")) {
-        alert("Please update the API_URL in the code with your deployed Script URL.");
-        nextBtn.disabled = false; nextBtn.textContent = "Submit Registration"; return;
+      // Convert Image to Base64
+      if (selectedFile) {
+        loaderText.textContent = "Compressing Voucher...";
+        try {
+          const base64 = await resizeAndConvert(selectedFile);
+          data.voucherBase64 = base64; // Add image string to data object
+        } catch (err) {
+          console.error("Image processing error", err);
+          alert("Could not process image. Please try a smaller file.");
+          loader.classList.add('hidden');
+          nextBtn.disabled = false; nextBtn.textContent = "Submit Registration";
+          return;
+        }
       }
 
-      // Show Loader
-      loader.classList.remove('hidden');
       loaderText.textContent = "Submitting Registration...";
 
-      // Payload
+      // Send ONE single request
       const payload = JSON.stringify({ type: 'registerSymposium', data: data });
-
-      // Send Request
+      
       fetch(API_URL, {
         method: 'POST',
-        mode: 'no-cors', // Critical for GitHub Pages -> Google Sheets reliability
+        mode: 'no-cors',
         body: payload
       })
       .then(() => {
-        // We assume success because no network error occurred (no-cors opaque response)
-        loaderText.textContent = "Success! Opening Upload Window...";
+        loaderText.textContent = "Success!";
         setTimeout(() => {
-            loader.classList.add('hidden');
-            nextBtn.disabled = false; 
-            nextBtn.textContent = "Submit Registration";
-            document.getElementById('uploadModal').classList.remove('hidden');
+          loader.classList.add('hidden');
+          alert("Registration Complete! Thank you.");
+          location.reload();
         }, 1000);
       })
-      .catch(err => { 
-        console.error("Network Error:", err);
+      .catch(err => {
+        console.error("Error:", err);
         loader.classList.add('hidden');
-        alert("Network Error. Ensure you are on GitHub Pages and not opening file:// directly.");
-        nextBtn.disabled = false; nextBtn.textContent = "Submit Registration"; 
+        alert("An error occurred. Please try again.");
+        nextBtn.disabled = false; nextBtn.textContent = "Submit Registration";
       });
     }
 
-    // ==========================================
-    // FILE UPLOAD
-    // ==========================================
-    let selectedFile = null;
-    document.getElementById('fileInput').addEventListener('change', function(e) {
-      selectedFile = e.target.files[0];
-      if(selectedFile) {
-        document.getElementById('fileStatus').textContent = selectedFile.name;
-        document.getElementById('uploadBtn').disabled = false;
-        document.getElementById('uploadBtn').classList.remove('opacity-50');
-      }
-    });
-
-    document.getElementById('uploadBtn').addEventListener('click', async function() {
-      if(!selectedFile) return;
-      
-      // Show Loader
-      loader.classList.remove('hidden');
-      loaderText.textContent = "Uploading Voucher...";
-      
-      const reader = new FileReader();
-      reader.onload = async (e) => {
-        const img = new Image();
-        img.onload = async () => {
-           // Resize Image
-           const canvas = document.createElement('canvas');
-           const MAX_W = 800;
-           const scale = MAX_W / img.width;
-           canvas.width = MAX_W;
-           canvas.height = img.height * scale;
-           const ctx = canvas.getContext('2d');
-           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-           const base64 = canvas.toDataURL('image/jpeg', 0.7).split(',')[1];
-           
-           try {
-             const payload = JSON.stringify({
-               type: 'uploadVoucher',
-               email: document.querySelector('input[name="email"]').value,
-               base64Data: base64
-             });
-             
-             await fetch(API_URL, { 
-               method: 'POST',
-               mode: 'no-cors', // Robust mode
-               body: payload
-             });
-             
-             loaderText.textContent = "Upload Complete!";
-             setTimeout(() => {
-                alert("Registration and Voucher Upload Complete!");
-                document.getElementById('uploadModal').classList.add('hidden');
-                loader.classList.add('hidden');
-                document.getElementById('registrationForm').reset();
-                window.scrollTo(0,0);
-             }, 1000);
-             
-           } catch (error) {
-             alert("Connection failed during upload.");
-             loader.classList.add('hidden');
-             this.textContent = "Upload & Finish";
-             this.disabled = false;
-           }
+    function resizeAndConvert(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const MAX_W = 800;
+            const scale = MAX_W / img.width;
+            canvas.width = MAX_W;
+            canvas.height = img.height * scale;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            const base64 = canvas.toDataURL('image/jpeg', 0.6); // Compress to 60% quality
+            resolve(base64);
+          };
+          img.onerror = reject;
+          img.src = e.target.result;
         };
-        img.src = e.target.result;
-      };
-      reader.readAsDataURL(selectedFile);
-    });
-
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+    
     updateProgressBar();
   </script>
 </body>
