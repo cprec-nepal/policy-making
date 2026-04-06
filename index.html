@@ -664,6 +664,22 @@
       to { transform: rotate(360deg); }
     }
     
+    /* Registration Type Selector */
+    .reg-type-card {
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+    
+    .reg-type-card:hover {
+      transform: translateY(-4px);
+    }
+    
+    .reg-type-card.active {
+      border-color: var(--accent);
+      background: rgba(14, 165, 233, 0.05);
+    }
+    
     /* Reduced motion */
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
@@ -1142,7 +1158,7 @@
             <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
               <span class="text-sm font-bold text-emerald-600 w-28 flex-shrink-0">12:45 PM</span>
               <div>
-                <h4 class="font-bold text-slate-800"> Break & Networking</h4>
+                <h4 class="font-bold text-slate-800">Break & Networking</h4>
                 <p class="text-sm text-slate-500">Snacks included</p>
               </div>
             </div>
@@ -1239,46 +1255,74 @@
 
   <!-- Registration Section -->
   <section id="register" class="py-20 px-4 bg-slate-50">
-    <div class="max-w-3xl mx-auto">
+    <div class="max-w-4xl mx-auto">
       <div class="text-center mb-8 reveal">
-        <span class="text-sky-600 font-bold text-sm uppercase tracking-widest">Register</span>
-        <h2 class="font-display text-3xl sm:text-4xl font-bold mt-2">Secure Your Spot</h2>
-        <p class="text-slate-500 mt-3">Complete the 4-step wizard to register. Limited to 100 participants only.</p>
-        <div class="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 border border-emerald-200 rounded-full text-sm text-emerald-700">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          Includes: Symposium Kit, Snacks, Tea/Coffee, Certificate
+        <span class="text-sky-600 font-bold text-sm uppercase tracking-widest">Registration Portal</span>
+        <h2 class="font-display text-3xl sm:text-4xl font-bold mt-2">Choose Your Role</h2>
+        <p class="text-slate-500 mt-3">Select how you'd like to participate in the symposium.</p>
+      </div>
+
+      <!-- Role Selector -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 reveal" id="reg-type-selector">
+        <div class="reg-type-card glass-card p-6 text-center active" onclick="setRegType('participant')" id="card-participant">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-100 to-sky-50 flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+          </div>
+          <h3 class="font-bold text-slate-800 mb-1">Participant</h3>
+          <p class="text-xs text-slate-500">Students & Professionals</p>
+        </div>
+        
+        <div class="reg-type-card glass-card p-6 text-center" onclick="setRegType('volunteer')" id="card-volunteer">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-100 to-emerald-50 flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+          </div>
+          <h3 class="font-bold text-slate-800 mb-1">Volunteer</h3>
+          <p class="text-xs text-slate-500">Join the organizing team</p>
+        </div>
+        
+        <div class="reg-type-card glass-card p-6 text-center" onclick="setRegType('faculty')" id="card-faculty">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-100 to-purple-50 flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+          </div>
+          <h3 class="font-bold text-slate-800 mb-1">Faculty / Expert</h3>
+          <p class="text-xs text-slate-500">Speakers & Panelists</p>
         </div>
       </div>
 
-      <div class="glass-card p-8 sm:p-10 relative reveal">
+      <!-- PARTICIPANT FORM -->
+      <div id="form-participant" class="glass-card p-8 sm:p-10 relative reveal">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="font-display text-xl font-bold text-sky-600">Participant Registration</h3>
+          <span class="text-xs px-3 py-1 bg-emerald-50 text-emerald-700 rounded-full font-medium">Includes: Kit, Snacks, Certificate</span>
+        </div>
+        
         <!-- Progress Steps -->
         <div class="flex justify-between mb-10 relative">
           <div class="absolute top-4 left-0 right-0 h-1 bg-slate-200 -z-10 rounded-full"></div>
-          <div class="absolute top-4 left-0 h-1 bg-gradient-to-r from-sky-500 to-emerald-500 -z-10 rounded-full transition-all duration-500" style="width: 0%" id="progress-line"></div>
+          <div class="absolute top-4 left-0 h-1 bg-gradient-to-r from-sky-500 to-emerald-500 -z-10 rounded-full transition-all duration-500" style="width: 0%" id="progress-line-participant"></div>
           
-          <div class="step-indicator flex flex-col items-center z-10" data-step="1">
-            <div class="w-10 h-10 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-sm progress-step active">1</div>
+          <div class="step-indicator-p flex flex-col items-center z-10" data-step="1">
+            <div class="w-10 h-10 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-sm progress-step-p active">1</div>
             <span class="text-xs mt-2 text-slate-600 hidden sm:block font-medium">Personal</span>
           </div>
-          <div class="step-indicator flex flex-col items-center z-10" data-step="2">
-            <div class="w-10 h-10 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-sm progress-step">2</div>
+          <div class="step-indicator-p flex flex-col items-center z-10" data-step="2">
+            <div class="w-10 h-10 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-sm progress-step-p">2</div>
             <span class="text-xs mt-2 text-slate-600 hidden sm:block font-medium">Academic</span>
           </div>
-          <div class="step-indicator flex flex-col items-center z-10" data-step="3">
-            <div class="w-10 h-10 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-sm progress-step">3</div>
+          <div class="step-indicator-p flex flex-col items-center z-10" data-step="3">
+            <div class="w-10 h-10 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-sm progress-step-p">3</div>
             <span class="text-xs mt-2 text-slate-600 hidden sm:block font-medium">Emergency</span>
           </div>
-          <div class="step-indicator flex flex-col items-center z-10" data-step="4">
-            <div class="w-10 h-10 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-sm progress-step">4</div>
+          <div class="step-indicator-p flex flex-col items-center z-10" data-step="4">
+            <div class="w-10 h-10 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-sm progress-step-p">4</div>
             <span class="text-xs mt-2 text-slate-600 hidden sm:block font-medium">Payment</span>
           </div>
         </div>
 
-        <form id="registrationForm" onsubmit="return false;">
-          
-          <!-- STEP 1: Personal Details -->
-          <div class="form-step active" id="step-1">
-            <h3 class="font-display text-xl font-bold mb-6 flex items-center gap-2">
+        <form id="participantForm" onsubmit="return false;">
+          <!-- STEP 1 -->
+          <div class="form-step active" id="step-p-1">
+            <h3 class="font-display text-lg font-bold mb-6 flex items-center gap-2">
               <span class="w-8 h-8 rounded-lg bg-sky-100 flex items-center justify-center text-sky-600 text-sm font-bold">1</span>
               Personal Details
             </h3>
@@ -1288,11 +1332,11 @@
                 <label>Contact Number *</label>
                 <div class="phone-wrapper relative">
                   <div class="phone-prefix">+977</div>
-                  <input type="tel" name="phone" id="phone-input" class="form-input" placeholder="98XXXXXXXX" required maxlength="10" />
+                  <input type="tel" name="phone" class="form-input participant-phone" placeholder="98XXXXXXXX" required maxlength="10" />
                   <svg class="check-icon validation-icon w-5 h-5 text-emerald-500 absolute right-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
                   <svg class="cross-icon validation-icon w-5 h-5 text-red-500 absolute right-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>
                 </div>
-                <p class="text-xs text-slate-400 mt-1" id="phone-status">Must start with 9 and be 10 digits.</p>
+                <p class="text-xs text-slate-400 mt-1 phone-status-p">Must start with 9 and be 10 digits.</p>
               </div>
               <div><label>Email Address *</label><input type="email" name="email" class="form-input" placeholder="you@example.com" required /></div>
               <div class="grid grid-cols-2 gap-4">
@@ -1310,16 +1354,16 @@
             </div>
           </div>
 
-          <!-- STEP 2: Academic Details -->
-          <div class="form-step" id="step-2">
-            <h3 class="font-display text-xl font-bold mb-6 flex items-center gap-2">
+          <!-- STEP 2 -->
+          <div class="form-step" id="step-p-2">
+            <h3 class="font-display text-lg font-bold mb-6 flex items-center gap-2">
               <span class="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-600 text-sm font-bold">2</span>
               Academic Details
             </h3>
             <div class="space-y-5">
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div><label>University *</label><input type="text" name="university" class="form-input" placeholder="e.g., Purbanchal University" required /></div>
-                <div><label>College Name *</label><input type="text" name="college" class="form-input" placeholder="Your college name" required /></div>
+                <div><label>University *</label><input type="text" name="university" class="form-input" placeholder="Purbanchal University" required /></div>
+                <div><label>College Name *</label><input type="text" name="college" class="form-input" placeholder="Your college" required /></div>
               </div>
               <div>
                 <label>Faculty *</label>
@@ -1334,15 +1378,15 @@
                 </select>
               </div>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div><label>Year of Joining *</label><input type="text" name="joiningYear" class="form-input" placeholder="e.g., 2022" required /></div>
-                <div><label>Passed Out Year</label><input type="text" name="passedYear" class="form-input" placeholder="e.g., 2026 (if applicable)" /></div>
+                <div><label>Year of Joining *</label><input type="text" name="joiningYear" class="form-input" placeholder="2022" required /></div>
+                <div><label>Passed Out Year</label><input type="text" name="passedYear" class="form-input" placeholder="2026 (if applicable)" /></div>
               </div>
             </div>
           </div>
 
-          <!-- STEP 3: Emergency Contact -->
-          <div class="form-step" id="step-3">
-            <h3 class="font-display text-xl font-bold mb-6 flex items-center gap-2">
+          <!-- STEP 3 -->
+          <div class="form-step" id="step-p-3">
+            <h3 class="font-display text-lg font-bold mb-6 flex items-center gap-2">
               <span class="w-8 h-8 rounded-lg bg-cyan-100 flex items-center justify-center text-cyan-600 text-sm font-bold">3</span>
               Emergency Contact
             </h3>
@@ -1370,9 +1414,9 @@
             </div>
           </div>
 
-          <!-- STEP 4: Payment Details -->
-          <div class="form-step" id="step-4">
-            <h3 class="font-display text-xl font-bold mb-6 flex items-center gap-2">
+          <!-- STEP 4 -->
+          <div class="form-step" id="step-p-4">
+            <h3 class="font-display text-lg font-bold mb-6 flex items-center gap-2">
               <span class="w-8 h-8 rounded-lg bg-rose-100 flex items-center justify-center text-rose-600 text-sm font-bold">4</span>
               Payment Details
             </h3>
@@ -1380,35 +1424,20 @@
             <div class="bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl p-5 mb-6 border border-slate-200">
               <div class="flex flex-col gap-4">
                 <div class="text-sm text-slate-600">
-                  <strong class="text-slate-800">Scan to Pay:</strong> Click/tap any QR code to enlarge for easy scanning<br/>
+                  <strong class="text-slate-800">Scan to Pay:</strong> Click/tap any QR code to enlarge<br/>
                   <span class="text-xs text-slate-500">A/c: Manish Thapaliya (9803369377)</span>
                 </div>
                 <div class="grid grid-cols-3 gap-3">
                   <div class="text-center">
-                    <img 
-                      src="https://raw.githubusercontent.com/cprec-nepal/logo/main/QR.jpeg" 
-                      alt="Bank QR Code" 
-                      class="payment-qr-img w-full h-24 rounded-lg border border-slate-200 shadow-sm bg-white object-cover"
-                      onclick="openLightbox(this.src, 'Bank Transfer')"
-                    >
+                    <img src="https://raw.githubusercontent.com/cprec-nepal/logo/main/QR.jpeg" alt="Bank QR Code" class="payment-qr-img w-full h-20 rounded-lg border border-slate-200 shadow-sm bg-white object-cover" onclick="openLightbox(this.src, 'Bank Transfer')">
                     <p class="text-xs text-slate-500 mt-1 font-medium">Bank</p>
                   </div>
                   <div class="text-center">
-                    <img 
-                      src="https://raw.githubusercontent.com/cprec-nepal/logo/main/Esewa.jpeg" 
-                      alt="Esewa QR Code" 
-                      class="payment-qr-img w-full h-24 rounded-lg border border-slate-200 shadow-sm bg-white object-cover"
-                      onclick="openLightbox(this.src, 'Esewa Payment')"
-                    >
+                    <img src="https://raw.githubusercontent.com/cprec-nepal/logo/main/Esewa.jpeg" alt="Esewa QR Code" class="payment-qr-img w-full h-20 rounded-lg border border-slate-200 shadow-sm bg-white object-cover" onclick="openLightbox(this.src, 'Esewa Payment')">
                     <p class="text-xs text-slate-500 mt-1 font-medium">Esewa</p>
                   </div>
                   <div class="text-center">
-                    <img 
-                      src="https://raw.githubusercontent.com/cprec-nepal/logo/main/Khalti.jpeg" 
-                      alt="Khalti QR Code" 
-                      class="payment-qr-img w-full h-24 rounded-lg border border-slate-200 shadow-sm bg-white object-cover"
-                      onclick="openLightbox(this.src, 'Khalti Payment')"
-                    >
+                    <img src="https://raw.githubusercontent.com/cprec-nepal/logo/main/Khalti.jpeg" alt="Khalti QR Code" class="payment-qr-img w-full h-20 rounded-lg border border-slate-200 shadow-sm bg-white object-cover" onclick="openLightbox(this.src, 'Khalti Payment')">
                     <p class="text-xs text-slate-500 mt-1 font-medium">Khalti</p>
                   </div>
                 </div>
@@ -1431,17 +1460,17 @@
 
               <div>
                 <label>Upload Payment Voucher *</label>
-                <div id="dropZone" class="drop-zone">
-                  <input type="file" id="fileInput" class="hidden" accept="image/*" />
-                  <div id="dropContent">
+                <div class="drop-zone drop-zone-p">
+                  <input type="file" class="file-input-p hidden" accept="image/*" />
+                  <div class="drop-content-p">
                     <svg class="w-10 h-10 text-slate-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                     <p class="text-sm font-medium text-slate-600">Drag & drop image here</p>
                     <p class="text-xs text-slate-400">or click to browse</p>
                   </div>
-                  <div id="filePreview" class="hidden">
+                  <div class="file-preview-p hidden">
                     <div class="flex items-center justify-center gap-2 text-emerald-600">
                       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                      <span class="text-sm font-medium" id="fileName">file.jpg</span>
+                      <span class="text-sm font-medium file-name-p">file.jpg</span>
                     </div>
                   </div>
                 </div>
@@ -1450,17 +1479,126 @@
           </div>
 
           <div class="flex justify-between mt-8 pt-6 border-t border-slate-100">
-            <button type="button" id="prevBtn" class="btn-ghost hidden" onclick="nextPrev(-1)">
+            <button type="button" class="prevBtn-p btn-ghost hidden" onclick="nextPrevParticipant(-1)">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
               Previous
             </button>
-            <button type="button" id="nextBtn" class="btn-primary ml-auto" onclick="nextPrev(1)">
+            <button type="button" class="nextBtn-p btn-primary ml-auto" onclick="nextPrevParticipant(1)">
               Next Step
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             </button>
           </div>
         </form>
       </div>
+
+      <!-- VOLUNTEER FORM -->
+      <div id="form-volunteer" class="glass-card p-8 sm:p-10 relative hidden">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="font-display text-xl font-bold text-emerald-600">Volunteer Registration</h3>
+          <span class="text-xs px-3 py-1 bg-emerald-50 text-emerald-700 rounded-full font-medium">Join the Team</span>
+        </div>
+        
+        <form id="volunteerForm" onsubmit="submitVolunteerForm(); return false;">
+          <div class="space-y-5">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div><label>Full Name *</label><input type="text" name="fullName" class="form-input" required /></div>
+              <div>
+                <label>Contact Number *</label>
+                <div class="phone-wrapper relative">
+                  <div class="phone-prefix">+977</div>
+                  <input type="tel" name="phone" class="form-input volunteer-phone" placeholder="98XXXXXXXX" required maxlength="10" />
+                  <svg class="check-icon validation-icon w-5 h-5 text-emerald-500 absolute right-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                  <svg class="cross-icon validation-icon w-5 h-5 text-red-500 absolute right-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>
+                </div>
+              </div>
+            </div>
+            <div><label>Email Address *</label><input type="email" name="email" class="form-input" required /></div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div><label>Institution *</label><input type="text" name="institution" class="form-input" placeholder="Your college/organization" required /></div>
+              <div><label>Current Role *</label><input type="text" name="role" class="form-input" placeholder="Student / Professional" required /></div>
+            </div>
+            <div>
+              <label>Area of Interest *</label>
+              <select name="interest" class="form-input" required>
+                <option value="">Select Area</option>
+                <option value="Event Management">Event Management</option>
+                <option value="Registration Desk">Registration Desk</option>
+                <option value="Media & Documentation">Media & Documentation</option>
+                <option value="Technical Support">Technical Support</option>
+                <option value="Hospitality">Hospitality</option>
+              </select>
+            </div>
+            <div>
+              <label>Why do you want to volunteer? *</label>
+              <textarea name="motivation" class="form-input" rows="3" placeholder="Brief motivation (50-100 words)" required></textarea>
+            </div>
+            <div>
+              <label>Previous Experience (Optional)</label>
+              <textarea name="experience" class="form-input" rows="2" placeholder="Any relevant volunteering experience"></textarea>
+            </div>
+          </div>
+          <div class="flex justify-end mt-8 pt-6 border-t border-slate-100">
+            <button type="submit" class="btn-primary">
+              Submit Application
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- FACULTY FORM -->
+      <div id="form-faculty" class="glass-card p-8 sm:p-10 relative hidden">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="font-display text-xl font-bold text-purple-600">Faculty / Expert Registration</h3>
+          <span class="text-xs px-3 py-1 bg-purple-50 text-purple-700 rounded-full font-medium">Speaker / Panelist</span>
+        </div>
+        
+        <form id="facultyForm" onsubmit="submitFacultyForm(); return false;">
+          <div class="space-y-5">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div><label>Full Name *</label><input type="text" name="fullName" class="form-input" required /></div>
+              <div>
+                <label>Contact Number *</label>
+                <div class="phone-wrapper relative">
+                  <div class="phone-prefix">+977</div>
+                  <input type="tel" name="phone" class="form-input faculty-phone" placeholder="98XXXXXXXX" required maxlength="10" />
+                  <svg class="check-icon validation-icon w-5 h-5 text-emerald-500 absolute right-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                  <svg class="cross-icon validation-icon w-5 h-5 text-red-500 absolute right-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>
+                </div>
+              </div>
+            </div>
+            <div><label>Email Address *</label><input type="email" name="email" class="form-input" required /></div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div><label>Institution *</label><input type="text" name="institution" class="form-input" placeholder="Organization name" required /></div>
+              <div><label>Designation *</label><input type="text" name="designation" class="form-input" placeholder="Professor / Official" required /></div>
+            </div>
+            <div><label>Department / Division</label><input type="text" name="department" class="form-input" placeholder="Department name" /></div>
+            <div>
+              <label>Area of Expertise *</label>
+              <select name="expertise" class="form-input" required>
+                <option value="">Select Expertise</option>
+                <option value="Health Policy">Health Policy</option>
+                <option value="Pharmacy Practice">Pharmacy Practice</option>
+                <option value="Drug Regulation">Drug Regulation</option>
+                <option value="Public Health">Public Health</option>
+                <option value="Clinical Pharmacy">Clinical Pharmacy</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div>
+              <label>Brief Bio / Profile *</label>
+              <textarea name="bio" class="form-input" rows="3" placeholder="Short bio for introduction (50-100 words)" required></textarea>
+            </div>
+          </div>
+          <div class="flex justify-end mt-8 pt-6 border-t border-slate-100">
+            <button type="submit" class="btn-primary" style="background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);">
+              Submit Registration
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            </button>
+          </div>
+        </form>
+      </div>
+      
     </div>
   </section>
 
@@ -1555,9 +1693,9 @@
       <div class="grid md:grid-cols-2 gap-12 items-center">
         <div>
           <div class="flex items-center gap-3 mb-4">
- <a href="#top" class="flex items-center gap-3 group">
-        <img src="https://raw.githubusercontent.com/cprec-nepal/logo/main/CPREC%20Nepal.png" alt="CPREC Nepal Logo" class="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105">
-      </a>
+            <a href="#top" class="flex items-center gap-3 group">
+              <img src="https://raw.githubusercontent.com/cprec-nepal/logo/main/CPREC%20Nepal.png" alt="CPREC Nepal Logo" class="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105">
+            </a>
           </div>
           <p class="text-slate-400 text-sm leading-relaxed mb-6">
             CPREC Nepal is a non-profit, student-led organization dedicated to empowering pharmacy professionals through education, research, and community engagement in Nepal.
@@ -1605,35 +1743,43 @@
     // ==================================================
     const API_URL = "https://script.google.com/macros/s/AKfycbwS6Pbdz0b47vtSow-dUWOnFsIujhq-6Ikk1_5KgcjdU2UFcwRXWBfNS1ztZmnYF4BXuQ/exec";
     
-    // DOM Elements - Initialize first
+    // DOM Elements
     const loader = document.getElementById('loading-overlay');
     const loaderText = document.getElementById('loading-text');
-    const progressLine = document.getElementById('progress-line');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const phoneInput = document.getElementById('phone-input');
-    const phoneStatus = document.getElementById('phone-status');
-    const dropZone = document.getElementById('dropZone');
-    const fileInput = document.getElementById('fileInput');
-    const dropContent = document.getElementById('dropContent');
-    const filePreview = document.getElementById('filePreview');
-    const fileName = document.getElementById('fileName');
     const navbar = document.getElementById('navbar');
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
     const lightboxLabel = document.getElementById('lightbox-label');
     
-    // State variables
-    let currentStep = 0;
-    const steps = document.querySelectorAll('.form-step');
-    const progressSteps = document.querySelectorAll('.progress-step');
-    let selectedFile = null;
+    // Participant Form State
+    let currentStepP = 0;
+    const stepsP = document.querySelectorAll('#participantForm .form-step');
+    const progressStepsP = document.querySelectorAll('.progress-step-p');
+    const progressLineP = document.getElementById('progress-line-participant');
+    let selectedFileP = null;
     
     // Event date for countdown
     const eventDate = new Date('2025-02-15T08:30:00').getTime();
 
     // ==================================================
-    // LIGHTBOX FUNCTIONS
+    // REGISTRATION TYPE SWITCHER
+    // ==================================================
+    function setRegType(type) {
+      // Update cards
+      document.querySelectorAll('.reg-type-card').forEach(c => c.classList.remove('active'));
+      document.getElementById('card-' + type).classList.add('active');
+      
+      // Hide all forms
+      document.getElementById('form-participant').classList.add('hidden');
+      document.getElementById('form-volunteer').classList.add('hidden');
+      document.getElementById('form-faculty').classList.add('hidden');
+      
+      // Show selected form
+      document.getElementById('form-' + type).classList.remove('hidden');
+    }
+
+    // ==================================================
+    // LIGHTBOX
     // ==================================================
     function openLightbox(src, label) {
       lightboxImg.src = src;
@@ -1649,7 +1795,6 @@
       }
     }
 
-    // Close lightbox on Escape key
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape' && lightbox.classList.contains('active')) {
         lightbox.classList.remove('active');
@@ -1702,21 +1847,16 @@
     // ==================================================
     // NAVBAR SCROLL EFFECT
     // ==================================================
-    let lastScroll = 0;
     window.addEventListener('scroll', () => {
-      const currentScroll = window.pageYOffset;
-      
-      if (currentScroll > 100) {
+      if (window.pageYOffset > 100) {
         navbar.style.boxShadow = '0 4px 20px rgba(0,0,0,0.08)';
       } else {
         navbar.style.boxShadow = 'none';
       }
-      
-      lastScroll = currentScroll;
     });
 
     // ==================================================
-    // ODIMETER ANIMATION
+    // OdIMETER ANIMATION
     // ==================================================
     const odometerObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -1757,14 +1897,8 @@
     // ==================================================
     function toggleStage(card) {
       const wasExpanded = card.classList.contains('expanded');
-      
-      document.querySelectorAll('.stage-card').forEach(c => {
-        c.classList.remove('expanded');
-      });
-      
-      if (!wasExpanded) {
-        card.classList.add('expanded');
-      }
+      document.querySelectorAll('.stage-card').forEach(c => c.classList.remove('expanded'));
+      if (!wasExpanded) card.classList.add('expanded');
     }
 
     // ==================================================
@@ -1772,105 +1906,70 @@
     // ==================================================
     function toggleFaq(item) {
       const isActive = item.classList.contains('active');
-      
-      document.querySelectorAll('.faq-item').forEach(faq => {
-        faq.classList.remove('active');
-      });
-      
-      if (!isActive) {
-        item.classList.add('active');
-      }
+      document.querySelectorAll('.faq-item').forEach(faq => faq.classList.remove('active'));
+      if (!isActive) item.classList.add('active');
     }
 
     // ==================================================
-    // PHONE VALIDATION
+    // PHONE VALIDATION (Generic)
     // ==================================================
-    phoneInput.addEventListener('input', function(e) {
-      const value = e.target.value;
-      e.target.value = value.replace(/\D/g, '').substring(0, 10);
+    function setupPhoneValidation(selector, statusSelector) {
+      const input = document.querySelector(selector);
+      const status = document.querySelector(statusSelector);
+      if (!input) return;
       
-      if (e.target.value.length > 0) {
-        if (e.target.value.length === 10 && e.target.value.startsWith('9')) {
-          e.target.classList.remove('invalid');
-          e.target.classList.add('valid');
-          phoneStatus.textContent = 'Valid number';
-          phoneStatus.className = 'text-xs text-emerald-600 mt-1 font-medium';
+      input.addEventListener('input', function(e) {
+        const value = e.target.value;
+        e.target.value = value.replace(/\D/g, '').substring(0, 10);
+        
+        if (e.target.value.length > 0) {
+          if (e.target.value.length === 10 && e.target.value.startsWith('9')) {
+            e.target.classList.remove('invalid');
+            e.target.classList.add('valid');
+            if (status) {
+              status.textContent = 'Valid number';
+              status.className = 'text-xs text-emerald-600 mt-1 font-medium';
+            }
+          } else {
+            e.target.classList.remove('valid');
+            e.target.classList.add('invalid');
+            if (status) {
+              status.textContent = 'Invalid format';
+              status.className = 'text-xs text-red-500 mt-1 font-medium';
+            }
+          }
         } else {
-          e.target.classList.remove('valid');
-          e.target.classList.add('invalid');
-          phoneStatus.textContent = 'Invalid format';
-          phoneStatus.className = 'text-xs text-red-500 mt-1 font-medium';
-        }
-      } else {
-        e.target.classList.remove('valid', 'invalid');
-        phoneStatus.textContent = 'Must start with 9 and be 10 digits.';
-        phoneStatus.className = 'text-xs text-slate-400 mt-1';
-      }
-    });
-
-    // ==================================================
-    // DRAG AND DROP FILE UPLOAD
-    // ==================================================
-    dropZone.addEventListener('click', () => fileInput.click());
-    
-    dropZone.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      dropZone.classList.add('dragover');
-    });
-    
-    dropZone.addEventListener('dragleave', () => {
-      dropZone.classList.remove('dragover');
-    });
-    
-    dropZone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      dropZone.classList.remove('dragover');
-      if (e.dataTransfer.files.length) {
-        handleFile(e.dataTransfer.files[0]);
-      }
-    });
-    
-    fileInput.addEventListener('change', (e) => {
-      if (e.target.files.length) {
-        handleFile(e.target.files[0]);
-      }
-    });
-
-    function handleFile(file) {
-      if (!file.type.startsWith('image/')) {
-        alert('Please upload an image file.');
-        return;
-      }
-      
-      selectedFile = file;
-      fileName.textContent = file.name;
-      dropContent.classList.add('hidden');
-      filePreview.classList.remove('hidden');
-      dropZone.classList.add('has-file');
-    }
-
-    // ==================================================
-    // FORM NAVIGATION
-    // ==================================================
-    function updateProgressBar() {
-      const percent = (currentStep / (steps.length - 1)) * 100;
-      progressLine.style.width = percent + '%';
-      
-      progressSteps.forEach((step, idx) => {
-        step.classList.remove('active', 'completed');
-        if (idx < currentStep) {
-          step.classList.add('completed');
-        }
-        if (idx === currentStep) {
-          step.classList.add('active');
+          e.target.classList.remove('valid', 'invalid');
+          if (status) {
+            status.textContent = 'Must start with 9 and be 10 digits.';
+            status.className = 'text-xs text-slate-400 mt-1';
+          }
         }
       });
     }
+    
+    setupPhoneValidation('.participant-phone', '.phone-status-p');
+    setupPhoneValidation('.volunteer-phone');
+    setupPhoneValidation('.faculty-phone');
 
-    function validateStep(stepIndex) {
-      const container = steps[stepIndex];
+    // ==================================================
+    // PARTICIPANT FORM HANDLING
+    // ==================================================
+    function updateProgressBarP() {
+      const percent = (currentStepP / (stepsP.length - 1)) * 100;
+      progressLineP.style.width = percent + '%';
+      
+      progressStepsP.forEach((step, idx) => {
+        step.classList.remove('active', 'completed');
+        if (idx < currentStepP) step.classList.add('completed');
+        if (idx === currentStepP) step.classList.add('active');
+      });
+    }
+
+    function validateStepP(stepIndex) {
+      const container = stepsP[stepIndex];
       let valid = true;
-      const inputs = container.querySelectorAll('input[required], select[required]');
+      const inputs = container.querySelectorAll('input[required], select[required], textarea[required]');
       
       inputs.forEach(input => {
         if (!input.value.trim()) {
@@ -1881,63 +1980,94 @@
         }
       });
       
-      if (stepIndex === 0 && !phoneInput.classList.contains('valid')) {
-        valid = false;
+      if (stepIndex === 0) {
+        const phoneInput = container.querySelector('.participant-phone');
+        if (phoneInput && !phoneInput.classList.contains('valid')) valid = false;
       }
       
-      if (stepIndex === 3 && !selectedFile) {
-        dropZone.classList.add('invalid');
+      if (stepIndex === 3 && !selectedFileP) {
+        document.querySelector('.drop-zone-p').classList.add('invalid');
         alert('Please upload your payment voucher.');
         valid = false;
       }
       
-      if (!valid && stepIndex !== 3) {
-        alert('Please fill all required fields correctly.');
-      }
-      
+      if (!valid && stepIndex !== 3) alert('Please fill all required fields correctly.');
       return valid;
     }
 
-    function nextPrev(n) {
-      if (n === 1 && !validateStep(currentStep)) return;
+    function nextPrevParticipant(n) {
+      if (n === 1 && !validateStepP(currentStepP)) return;
       
-      steps[currentStep].classList.remove('active');
-      currentStep += n;
+      stepsP[currentStepP].classList.remove('active');
+      currentStepP += n;
       
-      if (currentStep >= steps.length) {
-        submitForm();
+      if (currentStepP >= stepsP.length) {
+        submitParticipantForm();
         return;
       }
       
-      steps[currentStep].classList.add('active');
-      updateProgressBar();
+      stepsP[currentStepP].classList.add('active');
+      updateProgressBarP();
       
-      prevBtn.classList.toggle('hidden', currentStep === 0);
-      nextBtn.innerHTML = currentStep === steps.length - 1 
+      const prevBtn = document.querySelector('.prevBtn-p');
+      const nextBtn = document.querySelector('.nextBtn-p');
+      
+      prevBtn.classList.toggle('hidden', currentStepP === 0);
+      nextBtn.innerHTML = currentStepP === stepsP.length - 1 
         ? 'Submit Registration <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>'
-        : 'Next Step <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>';
+        : 'Next Step <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7-7-7"/></svg>';
+    }
+
+    // Drag and Drop for Participant
+    const dropZoneP = document.querySelector('.drop-zone-p');
+    const fileInputP = document.querySelector('.file-input-p');
+    const dropContentP = document.querySelector('.drop-content-p');
+    const filePreviewP = document.querySelector('.file-preview-p');
+    const fileNameP = document.querySelector('.file-name-p');
+
+    if (dropZoneP) {
+      dropZoneP.addEventListener('click', () => fileInputP.click());
+      
+      dropZoneP.addEventListener('dragover', (e) => { e.preventDefault(); dropZoneP.classList.add('dragover'); });
+      dropZoneP.addEventListener('dragleave', () => dropZoneP.classList.remove('dragover'));
+      dropZoneP.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZoneP.classList.remove('dragover');
+        if (e.dataTransfer.files.length) handleFileP(e.dataTransfer.files[0]);
+      });
+      
+      fileInputP.addEventListener('change', (e) => { if (e.target.files.length) handleFileP(e.target.files[0]); });
+    }
+
+    function handleFileP(file) {
+      if (!file.type.startsWith('image/')) { alert('Please upload an image file.'); return; }
+      selectedFileP = file;
+      fileNameP.textContent = file.name;
+      dropContentP.classList.add('hidden');
+      filePreviewP.classList.remove('hidden');
+      dropZoneP.classList.add('has-file');
     }
 
     // ==================================================
-    // FORM SUBMISSION
+    // FORM SUBMISSION FUNCTIONS
     // ==================================================
-    async function submitForm() {
-      const form = document.getElementById('registrationForm');
+    async function submitParticipantForm() {
+      const form = document.getElementById('participantForm');
       const formData = new FormData(form);
-      const data = {};
+      const data = { registrationType: 'participant' };
       formData.forEach((value, key) => data[key] = value);
       data.phone = '+977' + data.phone;
 
+      const nextBtn = document.querySelector('.nextBtn-p');
       nextBtn.disabled = true;
       nextBtn.innerHTML = '<svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Processing...';
       loader.classList.remove('hidden');
       loaderText.textContent = 'Preparing Data...';
 
-      if (selectedFile) {
+      if (selectedFileP) {
         loaderText.textContent = 'Compressing Voucher...';
         try {
-          const base64 = await resizeAndConvert(selectedFile);
-          data.voucherBase64 = base64;
+          data.voucherBase64 = await resizeAndConvert(selectedFileP);
         } catch (err) {
           console.error('Image processing error', err);
           alert('Could not process image. Please try a smaller file.');
@@ -1949,7 +2079,46 @@
       }
 
       loaderText.textContent = 'Submitting Registration...';
+      sendToAPI(data, 'Participant');
+    }
 
+    function submitVolunteerForm() {
+      const form = document.getElementById('volunteerForm');
+      const formData = new FormData(form);
+      const data = { registrationType: 'volunteer' };
+      formData.forEach((value, key) => data[key] = value);
+      data.phone = '+977' + data.phone;
+      
+      const phoneInput = document.querySelector('.volunteer-phone');
+      if (!phoneInput.classList.contains('valid')) {
+        alert('Please enter a valid phone number.');
+        return;
+      }
+      
+      loader.classList.remove('hidden');
+      loaderText.textContent = 'Submitting Volunteer Application...';
+      sendToAPI(data, 'Volunteer');
+    }
+
+    function submitFacultyForm() {
+      const form = document.getElementById('facultyForm');
+      const formData = new FormData(form);
+      const data = { registrationType: 'faculty' };
+      formData.forEach((value, key) => data[key] = value);
+      data.phone = '+977' + data.phone;
+      
+      const phoneInput = document.querySelector('.faculty-phone');
+      if (!phoneInput.classList.contains('valid')) {
+        alert('Please enter a valid phone number.');
+        return;
+      }
+      
+      loader.classList.remove('hidden');
+      loaderText.textContent = 'Submitting Faculty Registration...';
+      sendToAPI(data, 'Faculty');
+    }
+
+    function sendToAPI(data, typeName) {
       const payload = JSON.stringify({ type: 'registerSymposium', data: data });
 
       fetch(API_URL, {
@@ -1961,7 +2130,7 @@
         loaderText.textContent = 'Success!';
         setTimeout(() => {
           loader.classList.add('hidden');
-          alert('Registration Complete! Thank you for registering for the Pharmacy in Health Policy Symposium 2026.');
+          alert(typeName + ' Registration Complete! Thank you.');
           location.reload();
         }, 1000);
       })
@@ -1969,8 +2138,6 @@
         console.error('Error:', err);
         loader.classList.add('hidden');
         alert('An error occurred. Please try again.');
-        nextBtn.disabled = false;
-        nextBtn.innerHTML = 'Submit Registration <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>';
       });
     }
 
@@ -1998,8 +2165,8 @@
       });
     }
 
-    // Initialize progress bar
-    updateProgressBar();
+    // Initialize
+    updateProgressBarP();
   </script>
 </body>
 </html>
