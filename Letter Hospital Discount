@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CPREC Nepal | Letter Generator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
+    .glass-panel {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+    .input-field {
+      width: 100%;
+      padding: 12px 16px;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 8px;
+      color: white;
+      transition: all 0.2s;
+    }
+    .input-field:focus {
+      border-color: #06b6d4;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.2);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+      color: #020617;
+      font-weight: 600;
+      padding: 12px 24px;
+      border-radius: 8px;
+      width: 100%;
+      transition: transform 0.1s;
+    }
+    .btn-primary:active { transform: scale(0.98); }
+    .hidden { display: none; }
+    .spinner {
+      border: 3px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top: 3px solid #06b6d4;
+      width: 20px;
+      height: 20px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+  
+  <!-- Main Container -->
+  <div class="w-full max-w-md glass-panel rounded-2xl p-8">
+    
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <div class="w-20 h-20 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-xl mx-auto mb-4 flex items-center justify-center shadow-lg shadow-cyan-500/30">
+        <!-- Placeholder Logo -->
+        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+      </div>
+      <h1 class="text-2xl font-bold text-white">CPREC Nepal</h1>
+      <p class="text-slate-400 text-sm mt-1">Official Letter Generator</p>
+    </div>
+
+    <!-- Form -->
+    <form id="letterForm" class="space-y-5">
+      <div>
+        <label class="block text-sm font-medium text-slate-300 mb-1">Full Name</label>
+        <input type="text" id="fullName" class="input-field" placeholder="e.g. Ram Bahadur" required>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-slate-300 mb-1">Email Address</label>
+        <input type="email" id="email" class="input-field" placeholder="your@email.com" required>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-slate-300 mb-1">Membership Type</label>
+        <select id="memberType" class="input-field">
+          <option value="General Member">General Member</option>
+          <option value="Friends and Family (FnF)">Friends and Family (FnF)</option>
+        </select>
+      </div>
+
+      <button type="submit" id="submitBtn" class="btn-primary flex items-center justify-center gap-2">
+        <span>Generate & Send Letter</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+      </button>
+    </form>
+
+    <!-- Success Message -->
+    <div id="successMessage" class="hidden mt-6 p-4 bg-green-500/10 border border-green-500/20 rounded-lg text-center">
+      <div class="text-green-400 font-semibold text-lg mb-1">Success!</div>
+      <p class="text-slate-300 text-sm">Your letter has been generated and emailed to <span id="successEmail" class="text-white font-medium"></span>.</p>
+      <p class="text-xs text-slate-500 mt-2">Please check your inbox and spam folder.</p>
+    </div>
+
+    <!-- Loading State -->
+    <div id="loadingState" class="hidden mt-4 text-center">
+      <div class="spinner mx-auto mb-2"></div>
+      <p class="text-slate-400 text-sm">Processing request...</p>
+    </div>
+  </div>
+
+  <script>
+    // PASTE YOUR WEB APP URL HERE
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzjNGW96PFr2RgI2kg8HhlALPqxxE-zSOQLS35oze0OI9ElqDlx1iED3teKMyChYCmJ/exec";
+    
+    // Fallback Proxy to handle CORS from GitHub Pages
+    const CORS_PROXY = "https://script.google.com/macros/s/AKfycbzjNGW96PFr2RgI2kg8HhlALPqxxE-zSOQLS35oze0OI9ElqDlx1iED3teKMyChYCmJ/exec"; // Note: Using a custom proxy is usually safer, but for this specific setup, we will try direct first with text/plain
+
+    document.getElementById('letterForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const btn = document.getElementById('submitBtn');
+      const loading = document.getElementById('loadingState');
+      const success = document.getElementById('successMessage');
+      const email = document.getElementById('email').value;
+
+      // UI Updates
+      btn.disabled = true;
+      btn.classList.add('opacity-50');
+      loading.classList.remove('hidden');
+      success.classList.add('hidden');
+
+      const data = {
+        fullName: document.getElementById('fullName').value,
+        email: email,
+        memberType: document.getElementById('memberType').value,
+        memberID: "" // Let script generate it
+      };
+
+      // We use text/plain to trigger Google Script's simple doPost 
+      // Note: This is a workaround. If it fails, you usually need a proxy.
+      // However, modern Google Script deployments often accept direct POST if set to 'Anyone'.
+      
+      fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors', // Critical for external domains
+        headers: {
+          'Content-Type': 'text/plain' // GAS reads this as e.postData.contents
+        },
+        body: JSON.stringify(data)
+      })
+      .then(() => {
+        // Since mode is 'no-cors', we can't read the response, 
+        // so we assume success if no network error.
+        loading.classList.add('hidden');
+        success.classList.remove('hidden');
+        document.getElementById('successEmail').textContent = email;
+        document.getElementById('letterForm').reset();
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        loading.innerHTML = `<p class="text-red-400 text-sm">Error: ${error.message}. Please try again.</p>`;
+      })
+      .finally(() => {
+        btn.disabled = false;
+        btn.classList.remove('opacity-50');
+      });
+    });
+  </script>
+</body>
+</html>
