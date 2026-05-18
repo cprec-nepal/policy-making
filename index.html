@@ -188,164 +188,193 @@
     }
     
     /* Countdown Timer */
-    .countdown-item {
-      background: linear-gradient(135deg, rgba(14, 165, 233, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
-      border: 1px solid rgba(14, 165, 233, 0.2);
-      border-radius: 16px;
-      padding: 1rem 1.5rem;
-      min-width: 70px; /* Slightly reduced for mobile safety */
-      text-align: center;
-      transition: transform 0.3s ease, border-color 0.3s ease;
-    }
-    
-    .countdown-item:hover {
-      transform: scale(1.05);
-      border-color: rgba(14, 165, 233, 0.5);
-    }
-    
-    .countdown-value {
-      font-size: 2.5rem;
-      font-weight: 700;
-      font-family: 'Space Grotesk', sans-serif;
-      background: linear-gradient(135deg, #0ea5e9 0%, #10b981 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      line-height: 1;
-    }
-    
-    /* Schedule Timeline */
-    .schedule-item {
-      position: relative;
-      padding-left: 2rem;
-      border-left: 2px solid rgba(14, 165, 233, 0.2);
-      transition: all 0.3s ease;
-    }
-    
-    .schedule-item::before {
-      content: '';
-      position: absolute;
-      left: -7px;
-      top: 0;
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: #fff;
-      border: 2px solid #0ea5e9;
-      transition: all 0.3s ease;
-    }
-    
-    .schedule-item:hover::before {
-      background: #0ea5e9;
-      box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.2);
-    }
-    
-    .schedule-item:hover {
-      border-left-color: #0ea5e9;
-    }
-    
-    .schedule-item.break {
-      border-left-color: rgba(16, 185, 129, 0.3);
-    }
-    
-    .schedule-item.break::before {
-      border-color: #10b981;
-    }
-    
-    .schedule-item.break:hover::before {
-      background: #10b981;
-      box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
-    }
-    
-    /* Stage Cards */
-    .stage-card {
-      position: relative;
-      overflow: hidden;
-      cursor: pointer;
-    }
-    
-    .stage-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 4px;
-      height: 100%;
-      background: var(--stage-color, #0ea5e9);
-      transform: scaleY(0);
-      transform-origin: top;
-      transition: transform 0.4s ease;
-    }
-    
-    .stage-card:hover::before {
-      transform: scaleY(1);
-    }
-    
-    .stage-card .stage-icon {
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    
-    .stage-card:hover .stage-icon {
-      transform: scale(1.1) rotate(5deg);
-    }
-    
-    .stage-details {
-      max-height: 0;
-      overflow: hidden;
-      opacity: 0;
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    
-    .stage-card.expanded .stage-details {
-      max-height: 200px;
-      opacity: 1;
-      margin-top: 1rem;
-      padding-top: 1rem;
-      border-top: 1px solid var(--border);
-    }
-    
-    .stage-card .expand-icon {
-      transition: transform 0.3s ease;
-    }
-    
-    .stage-card.expanded .expand-icon {
-      transform: rotate(180deg);
-    }
-    
-    /* FAQ Accordion */
-    .faq-item {
-      border-bottom: 1px solid var(--border);
-    }
-    
-    .faq-question {
-      cursor: pointer;
-      transition: color 0.3s ease;
-    }
-    
-    .faq-question:hover {
-      color: var(--accent);
-    }
-    
-    .faq-answer {
-      max-height: 0;
-      overflow: hidden;
-      opacity: 0;
-      transition: all 0.4s ease;
-    }
-    
-    .faq-item.active .faq-answer {
-      max-height: 200px;
-      opacity: 1;
-      padding-bottom: 1rem;
-    }
-    
-    .faq-item.active .faq-icon {
-      transform: rotate(45deg);
-    }
-    
-    .faq-icon {
-      transition: transform 0.3s ease;
-    }
+   /* Countdown Timer */
+.countdown-item {
+  background: linear-gradient(
+    135deg,
+    rgba(14, 165, 233, 0.1) 0%,
+    rgba(16, 185, 129, 0.1) 100%
+  );
+  border: 1px solid rgba(14, 165, 233, 0.2);
+  border-radius: 16px;
+  padding: 1rem 1.5rem;
+  min-width: 90px;
+  text-align: center;
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.countdown-item:hover {
+  transform: translateY(-4px) scale(1.05);
+  border-color: rgba(14, 165, 233, 0.5);
+  box-shadow: 0 12px 30px rgba(14, 165, 233, 0.15);
+}
+
+.countdown-value {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  font-family: 'Space Grotesk', sans-serif;
+  background: linear-gradient(135deg, #0ea5e9 0%, #10b981 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 640px) {
+  #countdown {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .countdown-item {
+    min-width: 72px;
+    padding: 0.8rem 1rem;
+    border-radius: 14px;
+  }
+
+  .countdown-value {
+    font-size: 1.9rem;
+  }
+}
+
+/* Schedule Timeline */
+.schedule-item {
+  position: relative;
+  padding-left: 2rem;
+  border-left: 2px solid rgba(14, 165, 233, 0.2);
+  transition: all 0.3s ease;
+}
+
+.schedule-item::before {
+  content: '';
+  position: absolute;
+  left: -7px;
+  top: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #0ea5e9;
+  transition: all 0.3s ease;
+}
+
+.schedule-item:hover::before {
+  background: #0ea5e9;
+  box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.2);
+}
+
+.schedule-item:hover {
+  border-left-color: #0ea5e9;
+}
+
+.schedule-item.break {
+  border-left-color: rgba(16, 185, 129, 0.3);
+}
+
+.schedule-item.break::before {
+  border-color: #10b981;
+}
+
+.schedule-item.break:hover::before {
+  background: #10b981;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
+}
+
+/* Stage Cards */
+.stage-card {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.stage-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--stage-color, #0ea5e9);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.4s ease;
+}
+
+.stage-card:hover::before {
+  transform: scaleY(1);
+}
+
+.stage-card .stage-icon {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stage-card:hover .stage-icon {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.stage-details {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stage-card.expanded .stage-details {
+  max-height: 200px;
+  opacity: 1;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.stage-card .expand-icon {
+  transition: transform 0.3s ease;
+}
+
+.stage-card.expanded .expand-icon {
+  transform: rotate(180deg);
+}
+
+/* FAQ Accordion */
+.faq-item {
+  border-bottom: 1px solid var(--border);
+}
+
+.faq-question {
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.faq-question:hover {
+  color: var(--accent);
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+
+.faq-item.active .faq-answer {
+  max-height: 200px;
+  opacity: 1;
+  padding-bottom: 1rem;
+}
+
+.faq-item.active .faq-icon {
+  transform: rotate(45deg);
+}
+
+.faq-icon {
+  transition: transform 0.3s ease;
+}
     
     /* Audience Cards */
     .audience-card {
