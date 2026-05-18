@@ -188,60 +188,65 @@
     }
     
     /* Countdown Timer */
-   /* Countdown Timer */
-.countdown-item {
-  background: linear-gradient(
-    135deg,
-    rgba(14, 165, 233, 0.1) 0%,
-    rgba(16, 185, 129, 0.1) 100%
-  );
-  border: 1px solid rgba(14, 165, 233, 0.2);
-  border-radius: 16px;
-  padding: 1rem 1.5rem;
-  min-width: 90px;
-  text-align: center;
-  transition:
-    transform 0.3s ease,
-    border-color 0.3s ease,
-    box-shadow 0.3s ease;
-  backdrop-filter: blur(10px);
-}
+  <!-- Countdown Timer -->
+<div class="flex justify-center gap-3 sm:gap-4 mb-10 reveal reveal-delay-4" id="countdown">
+  <div class="countdown-item">
+    <div class="countdown-value" id="days">00</div>
+    <div class="text-xs text-slate-400 mt-1 font-medium uppercase tracking-wide">Days</div>
+  </div>
 
-.countdown-item:hover {
-  transform: translateY(-4px) scale(1.05);
-  border-color: rgba(14, 165, 233, 0.5);
-  box-shadow: 0 12px 30px rgba(14, 165, 233, 0.15);
-}
+  <div class="countdown-item">
+    <div class="countdown-value" id="hours">00</div>
+    <div class="text-xs text-slate-400 mt-1 font-medium uppercase tracking-wide">Hours</div>
+  </div>
 
-.countdown-value {
-  font-size: clamp(2rem, 5vw, 3rem);
-  font-weight: 700;
-  font-family: 'Space Grotesk', sans-serif;
-  background: linear-gradient(135deg, #0ea5e9 0%, #10b981 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  line-height: 1;
-  letter-spacing: -1px;
-}
+  <div class="countdown-item">
+    <div class="countdown-value" id="minutes">00</div>
+    <div class="text-xs text-slate-400 mt-1 font-medium uppercase tracking-wide">Mins</div>
+  </div>
 
-/* Mobile Responsive */
-@media (max-width: 640px) {
-  #countdown {
-    flex-wrap: wrap;
-    gap: 0.75rem;
+  <div class="countdown-item">
+    <div class="countdown-value" id="seconds">00</div>
+    <div class="text-xs text-slate-400 mt-1 font-medium uppercase tracking-wide">Secs</div>
+  </div>
+</div>
+
+<script>
+  // Set target date: February 15, 2025 at 8:30 AM
+  const targetDate = new Date("February 15, 2025 08:30:00").getTime();
+
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const distance = targetDate - now;
+
+    // If countdown is over
+    if (distance <= 0) {
+      document.getElementById("days").innerText = "00";
+      document.getElementById("hours").innerText = "00";
+      document.getElementById("minutes").innerText = "00";
+      document.getElementById("seconds").innerText = "00";
+      return;
+    }
+
+    // Time calculations
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    // Update HTML
+    document.getElementById("days").innerText = String(days).padStart(2, "0");
+    document.getElementById("hours").innerText = String(hours).padStart(2, "0");
+    document.getElementById("minutes").innerText = String(minutes).padStart(2, "0");
+    document.getElementById("seconds").innerText = String(seconds).padStart(2, "0");
   }
 
-  .countdown-item {
-    min-width: 72px;
-    padding: 0.8rem 1rem;
-    border-radius: 14px;
-  }
+  // Initial call
+  updateCountdown();
 
-  .countdown-value {
-    font-size: 1.9rem;
-  }
-}
+  // Update every second
+  setInterval(updateCountdown, 1000);
+</script>
 
 /* Schedule Timeline */
 .schedule-item {
