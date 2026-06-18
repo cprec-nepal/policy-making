@@ -89,21 +89,23 @@
     #preloader.hidden-loader { opacity: 0; visibility: hidden; pointer-events: none; }
 
     .preloader-logo {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #0ea5e9, #10b981);
+      width: 120px;
+      height: 120px;
       display: flex;
       align-items: center;
       justify-content: center;
       animation: logoPulse 1.6s ease-in-out infinite;
-      box-shadow: 0 0 40px rgba(14, 165, 233, 0.5);
+      filter: drop-shadow(0 0 30px rgba(14, 165, 233, 0.5));
     }
-    .preloader-logo svg { width: 40px; height: 40px; color: white; }
+    .preloader-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
 
     @keyframes logoPulse {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 40px rgba(14, 165, 233, 0.5); }
-      50% { transform: scale(1.1); box-shadow: 0 0 70px rgba(16, 185, 129, 0.7); }
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 30px rgba(14, 165, 233, 0.5)); }
+      50% { transform: scale(1.08); filter: drop-shadow(0 0 50px rgba(16, 185, 129, 0.7)); }
     }
 
     .preloader-text {
@@ -1242,9 +1244,9 @@
   <!-- Preloader -->
   <div id="preloader">
     <div class="preloader-logo">
-      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+      <img src="https://raw.githubusercontent.com/cprec-nepal/logo/main/CPREC%20Nepal.png" alt="CPREC Nepal Logo">
     </div>
-    <div class="preloader-text">CPREC Nepal</div>
+    <div class="preloader-text">Health Policy Symposium 2026</div>
     <div class="preloader-bar"></div>
   </div>
 
