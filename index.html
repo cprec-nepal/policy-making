@@ -307,6 +307,15 @@
     }
     .split-text.visible .word { opacity: 1; transform: translateY(0) rotateX(0); }
 
+    /* Gradient text span inside a split-text element — animate opacity-only
+       (no transform, since transform breaks background-clip:text).
+       Appears with a slight delay so it follows the word-by-word reveal. */
+    .split-text > span.bg-clip-text {
+      opacity: 0;
+      transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.3s;
+    }
+    .split-text.visible > span.bg-clip-text { opacity: 1; }
+
     /* Stagger children */
     .stagger > * {
       opacity: 0;
@@ -1206,6 +1215,162 @@
       .speakers-overlay .announce-subtitle { margin-bottom: 1rem; }
     }
 
+    /* ====================== PARTICIPANT LOCKED (Opening Soon) ====================== */
+    .participant-locked-wrapper {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      isolation: isolate;
+      min-height: 480px;
+      height: auto;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+    }
+    .participant-locked-content {
+      filter: blur(10px) saturate(0.5) brightness(0.92);
+      pointer-events: none;
+      user-select: none;
+      opacity: 0.45;
+      transition: filter 0.6s ease, opacity 0.6s ease;
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 1rem;
+      overflow: hidden;
+    }
+    .participant-locked-content > * { width: 100%; }
+    .participant-locked-content * { pointer-events: none !important; }
+    .participant-overlay {
+      position: relative;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 3rem 1.5rem;
+      pointer-events: none;
+      width: 100%;
+      background: linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.92) 100%);
+      border-radius: 24px;
+    }
+    .participant-overlay .lock-icon {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0ea5e9 0%, #10b981 100%);
+      display: flex; align-items: center; justify-content: center;
+      color: white;
+      box-shadow: 0 15px 40px rgba(14, 165, 233, 0.35), 0 0 0 8px rgba(14, 165, 233, 0.1);
+      margin-bottom: 1.1rem;
+      animation: lockPulse 2.4s ease-in-out infinite;
+    }
+    .participant-overlay .soon-eyebrow {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.4rem 1rem;
+      background: rgba(14, 165, 233, 0.1);
+      color: #0284c7;
+      border: 1px solid rgba(14, 165, 233, 0.25);
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 1rem;
+    }
+    .participant-overlay .soon-eyebrow .dot {
+      width: 6px; height: 6px;
+      background: #10b981;
+      border-radius: 50%;
+      animation: dotBlink 1.2s ease-in-out infinite;
+    }
+    .participant-overlay .soon-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.75rem, 4vw, 2.75rem);
+      line-height: 1.05;
+      background: linear-gradient(135deg, #0f172a 0%, #0ea5e9 50%, #10b981 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.6rem;
+      letter-spacing: -1px;
+    }
+    .participant-overlay .soon-subtitle {
+      font-size: clamp(0.9rem, 1.8vw, 1.02rem);
+      color: #475569;
+      max-width: 460px;
+      line-height: 1.55;
+      margin-bottom: 1.25rem;
+    }
+    .participant-overlay .soon-notify-btn {
+      pointer-events: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.9rem 1.75rem;
+      background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+      color: white;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(14, 165, 233, 0.3);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      font-size: 0.95rem;
+    }
+    .participant-overlay .soon-notify-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px rgba(14, 165, 233, 0.4);
+    }
+    .participant-overlay .soon-meta {
+      margin-top: 1rem;
+      display: flex; flex-wrap: wrap; gap: 1rem;
+      justify-content: center;
+      font-size: 0.8rem;
+      color: #64748b;
+    }
+    .participant-overlay .soon-meta span { display: inline-flex; align-items: center; gap: 0.4rem; }
+
+    /* Participant card closed state */
+    .reg-type-card.closed {
+      cursor: not-allowed;
+      opacity: 0.6;
+      position: relative;
+    }
+    .reg-type-card.closed:hover {
+      transform: none;
+      border-color: transparent;
+      background: rgba(15, 23, 42, 0.02);
+    }
+    .reg-type-card.closed .closed-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.2rem 0.6rem;
+      background: rgba(245, 158, 11, 0.1);
+      color: #b45309;
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      border-radius: 999px;
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-top: 0.5rem;
+    }
+    .reg-type-card .closed-badge { display: none; }
+
+    @media (max-width: 640px) {
+      .participant-locked-wrapper { min-height: 420px; }
+      .participant-locked-content { filter: blur(8px) saturate(0.5) brightness(0.92); }
+      .participant-overlay { padding: 2.25rem 1.25rem; }
+      .participant-overlay .lock-icon { width: 64px; height: 64px; margin-bottom: 1rem; }
+      .participant-overlay .soon-subtitle { margin-bottom: 1rem; }
+    }
+
     /* ====================== REDUCED MOTION ====================== */
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
@@ -1356,7 +1521,7 @@
 
       <h1 class="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight split-text" id="hero-title">
         <span class="block">Health Policy</span>
-        <span class="block">Symposium 2026</span>
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-cyan-400 to-emerald-400 inline-block">Symposium 2026</span>
       </h1>
 
       <p class="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto mb-6 leading-relaxed reveal reveal-delay-2" id="hero-subtitle">
@@ -1852,7 +2017,7 @@
   </section>
 
   <!-- Registration Section -->
-  <section id="register" class="py-14 sm:py-16 px-4 bg-slate-50">
+  <section id="register" class="py-20 px-4 bg-slate-50">
     <div class="max-w-4xl mx-auto">
       <div class="text-center mb-8 reveal">
         <span class="text-sky-600 font-bold text-sm uppercase tracking-widest">Registration Portal</span>
@@ -1860,18 +2025,16 @@
         <p class="text-slate-500 mt-3">Select how you'd like to participate in the symposium.</p>
       </div>
 
-      <div class="reg-locked-wrapper">
-      <div class="reg-locked-content">
-
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 reveal stagger" id="reg-type-selector">
-        <div class="reg-type-card glass-card p-6 text-center active" onclick="setRegType('participant')" id="card-participant">
-          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-100 to-sky-50 flex items-center justify-center mx-auto mb-4">
-            <svg class="w-8 h-8 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        <div class="reg-type-card glass-card p-6 text-center closed" id="card-participant" onclick="showParticipantSoon()">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-slate-100 to-slate-50 flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
           </div>
-          <h3 class="font-bold text-slate-800 mb-1">Participant</h3>
-          <p class="text-xs text-slate-500">Students & Professionals</p>
+          <h3 class="font-bold text-slate-500 mb-1">Participant</h3>
+          <p class="text-xs text-slate-400">Students & Professionals</p>
+          <span class="closed-badge"><span class="w-1 h-1 bg-amber-600 rounded-full"></span> Opens Soon</span>
         </div>
-        <div class="reg-type-card glass-card p-6 text-center" onclick="setRegType('volunteer')" id="card-volunteer">
+        <div class="reg-type-card glass-card p-6 text-center active" onclick="setRegType('volunteer')" id="card-volunteer">
           <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-100 to-emerald-50 flex items-center justify-center mx-auto mb-4">
             <svg class="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
           </div>
@@ -1887,8 +2050,11 @@
         </div>
       </div>
 
-      <!-- PARTICIPANT FORM -->
-      <div id="form-participant" class="glass-card p-8 sm:p-10 relative reveal">
+      <!-- PARTICIPANT FORM — LOCKED (Opening Soon) -->
+      <div id="form-participant" class="hidden">
+      <div class="participant-locked-wrapper">
+      <div class="participant-locked-content">
+      <div class="glass-card p-8 sm:p-10 relative">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-2">
           <h3 class="font-display text-xl font-bold text-sky-600">Participant Registration</h3>
           <span class="text-xs px-3 py-1 bg-emerald-50 text-emerald-700 rounded-full font-medium whitespace-nowrap">Includes: Kit, Snacks, Certificate</span>
@@ -2084,9 +2250,36 @@
           </div>
         </form>
       </div>
+      </div><!-- /.participant-locked-content -->
+
+      <!-- Participant Opening Soon Overlay -->
+      <div class="participant-overlay">
+        <div class="lock-icon">
+          <svg class="w-9 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+        </div>
+        <span class="soon-eyebrow"><span class="dot"></span> Participant Registration</span>
+        <h3 class="soon-title">Opening Soon</h3>
+        <p class="soon-subtitle">We're putting the final touches on the participant registration portal. Slots for the Health Policy Symposium 2026 will open shortly — meanwhile, volunteer and faculty registrations are open below. Stay tuned!</p>
+        <button type="button" class="soon-notify-btn magnetic" onclick="openChatwoot()">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+          Chat With Us — Notify Me
+        </button>
+        <div class="soon-meta">
+          <span>
+            <svg class="w-4 h-4 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            August 22, 2026
+          </span>
+          <span>
+            <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m6-1.13a4 4 0 100-8 4 4 0 000 8z"/></svg>
+            Limited to 100 Seats
+          </span>
+        </div>
+      </div>
+      </div><!-- /.participant-locked-wrapper -->
+      </div><!-- /#form-participant -->
 
       <!-- VOLUNTEER FORM -->
-      <div id="form-volunteer" class="glass-card p-8 sm:p-10 relative hidden">
+      <div id="form-volunteer" class="glass-card p-8 sm:p-10 relative">
         <div class="flex justify-between items-center mb-6">
           <h3 class="font-display text-xl font-bold text-emerald-600">Volunteer Registration</h3>
           <span class="text-xs px-3 py-1 bg-emerald-50 text-emerald-700 rounded-full font-medium">Join the Team</span>
@@ -2193,32 +2386,6 @@
         </form>
       </div>
 
-      </div><!-- /.reg-locked-content -->
-
-      <!-- Opening Soon Overlay -->
-      <div class="reg-overlay">
-        <div class="lock-icon">
-          <svg class="w-9 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-        </div>
-        <span class="soon-eyebrow"><span class="dot"></span> Registration Portal</span>
-        <h3 class="soon-title">Opening Soon</h3>
-        <p class="soon-subtitle">We're putting the final touches on the registration portal. Slots for the Health Policy Symposium 2026 will be open shortly — stay tuned!</p>
-        <button type="button" class="soon-notify-btn magnetic" onclick="openChatwoot()">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
-          Chat With Us — Notify Me
-        </button>
-        <div class="soon-meta">
-          <span>
-            <svg class="w-4 h-4 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-            August 22, 2026
-          </span>
-          <span>
-            <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m6-1.13a4 4 0 100-8 4 4 0 000 8z"/></svg>
-            Limited to 100 Seats
-          </span>
-        </div>
-      </div>
-      </div><!-- /.reg-locked-wrapper -->
     </div>
   </section>
 
@@ -2487,12 +2654,26 @@
     // REGISTRATION TYPE SWITCHER
     // ==================================================
     function setRegType(type) {
+      // Participant registration is closed — redirect to Opening Soon
+      if (type === 'participant') {
+        showParticipantSoon();
+        return;
+      }
       document.querySelectorAll('.reg-type-card').forEach(c => c.classList.remove('active'));
       document.getElementById('card-' + type).classList.add('active');
       document.getElementById('form-participant').classList.add('hidden');
       document.getElementById('form-volunteer').classList.add('hidden');
       document.getElementById('form-faculty').classList.add('hidden');
       document.getElementById('form-' + type).classList.remove('hidden');
+    }
+
+    // Show the Participant "Opening Soon" overlay (when user clicks the closed Participant card)
+    function showParticipantSoon() {
+      document.querySelectorAll('.reg-type-card').forEach(c => c.classList.remove('active'));
+      document.getElementById('card-participant').classList.add('active');
+      document.getElementById('form-volunteer').classList.add('hidden');
+      document.getElementById('form-faculty').classList.add('hidden');
+      document.getElementById('form-participant').classList.remove('hidden');
     }
 
     // ==================================================
@@ -2590,6 +2771,13 @@
             });
             node.parentNode.replaceChild(frag, node);
           } else if (node.nodeType === 1 && node.childNodes) {
+            // SKIP gradient-text spans — splitting them into .word spans breaks
+            // background-clip:text (the transform on .word creates a stacking context
+            // that prevents the parent's gradient from showing through the text).
+            // Leave gradient text intact as a single span so the gradient renders correctly.
+            if (typeof node.className === 'string' && node.className.includes('bg-clip-text')) {
+              return;
+            }
             // For element nodes with text content, wrap their text
             if (node.children.length === 0 && node.textContent.trim()) {
               const words = node.textContent.split(/(\s+)/);
